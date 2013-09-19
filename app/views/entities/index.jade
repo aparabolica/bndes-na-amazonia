@@ -1,0 +1,23 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (entities.length)
+    - each entity in entities
+      .entity
+        h3
+          a(href='/entities/'+entity._id, title=entity.name) #{entity.name}
+        p= entity.profile
+
+        .meta.muted
+          span= formatDate(entity.createdAt)
+
+    - if (pages > 1)
+      .pagination
+        ul
+          != createPagination(pages, page)
+  - else
+    p.muted No Entities.&nbsp;
+      a(href="/entities/new") create one

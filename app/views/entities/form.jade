@@ -1,0 +1,34 @@
+extends ../layouts/default
+
+
+block main
+  h1= title
+  hr
+
+block content
+  - var action = '/entities'
+  - action += entity.isNew? '' : '/' + entity.id
+  
+  .row
+    .span7
+      form.form-horizontal(method="post", action=action, enctype="multipart/form-data")
+
+        input(type="hidden", name="_csrf", value="#{csrf_token}")
+
+        - if (!entity.isNew)
+          input(type="hidden", name="_method", value="PUT")
+        
+        .control-group
+          label.control-label(for='name') Name
+          .controls
+            input#title.input-xlarge(type='text', name="name", value=entity.name, placeholder='Enter entity name')
+        
+        .control-group
+          label.control-label(for='profile') Profile
+          .controls
+            textarea#desc.input-xlarge(type='text', rows="5", name="body", placeholder='Profile for this entity')=entity.profile
+        
+        .form-actions
+          button.btn.btn-primary(type='submit') Save changes
+          &nbsp;
+          a.btn(href='/entities', title="cancel") Cancel

@@ -1,0 +1,18 @@
+extends ../layouts/default
+
+block main
+  h1= entity.name
+
+block content
+  .row
+    .span9
+      p=entity.profile
+      .meta.muted
+  p
+    br
+    form.center.form-inline.confirm(action="/entities/"+entity.id, method="post")
+      input(type='hidden', name='_csrf', value="#{csrf_token}")
+      a.btn(href='/entities/'+entity._id+'/edit', title="edit") Edit
+      &nbsp;&nbsp;
+      input(type="hidden", name="_method", value="DELETE")
+      button.btn.btn-danger(type="submit") delete
