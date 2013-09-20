@@ -18,6 +18,7 @@ var users = require('../app/controllers/users')
  */
 
 var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
+  , entityAuth = [auth.requiresLogin]
 
 /**
  * Expose routes
@@ -103,9 +104,9 @@ module.exports = function (app, passport) {
   app.get('/entities/new', auth.requiresLogin, entities.new)
   app.post('/entities', auth.requiresLogin, entities.create)
   app.get('/entities/:entityId', entities.show)
-  app.get('/entities/:entityId/edit', articleAuth, entities.edit)
-  // app.put('/entities/:id', articleAuth, entities.update)
-  // app.del('/entities/:id', articleAuth, entities.destroy)
+  app.get('/entities/:entityId/edit', entityAuth, entities.edit)
+  app.put('/entities/:entityId', entityAuth, entities.update)
+  //app.del('/entities/:id', articleAuth, entities.destroy)
   
   app.param('entityId', entities.load)
   

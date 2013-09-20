@@ -15,16 +15,18 @@ var mongoose = require('mongoose')
  */
 
 var EntitySchema = new Schema({
-  slug: {type : String, default : '', trim : true},
-  name: {type : String},
-  links: {type : []},
-  profile: {type : String, default : '', trim : true},
-  image: {
-    cdnUri: String,
-    files: []
-  },
-  createdAt  : {type : Date, default : Date.now}
+  shortName: {type : String, trim : true},
+  createdByUser: {type : Schema.ObjectId, ref : 'User'},
+  createdAt: {type : Date, default : Date.now}
 })
+
+/**
+ * Validations
+ */
+
+EntitySchema.path('shortName').validate(function (shortName) {
+  return shortName.length > 0
+}, 'Entity short name cannot be blank')
 
 /**
  * Statics
@@ -43,12 +45,11 @@ EntitySchema.statics = {
   load: function (id, cb) {
     this.findOne({ _id : id })
       .populate('user', 'name email username')
-      .populate('comments.user')
       .exec(cb)
   },
 
   /**
-   * List articles
+   * List entities
    *
    * @param {Object} options
    * @param {Function} cb
@@ -59,8 +60,8 @@ EntitySchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      // .populate('user', 'name username')
-      // .sort({'createdAt': -1}) // sort by date
+      .populate('user', 'name username')
+      .sort({'createdAt': -1}) // sort by date
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)

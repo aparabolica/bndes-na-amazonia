@@ -1,12 +1,12 @@
 extends ../layouts/default
 
 block main
-  h1= entity.name
+  h1= entity.shortName
 
 block content
   .row
     .span9
-      p=entity.profile
+      p=entity.shortName
       .meta.muted
   p
     br

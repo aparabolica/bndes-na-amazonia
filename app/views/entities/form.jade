@@ -19,14 +19,9 @@ block content
           input(type="hidden", name="_method", value="PUT")
         
         .control-group
-          label.control-label(for='name') Name
+          label.control-label(for='shortName') Short name
           .controls
-            input#title.input-xlarge(type='text', name="name", value=entity.name, placeholder='Enter entity name')
-        
-        .control-group
-          label.control-label(for='profile') Profile
-          .controls
-            textarea#desc.input-xlarge(type='text', rows="5", name="body", placeholder='Profile for this entity')=entity.profile
+            input#title.input-xlarge(type='text', name="shortName", value=entity.shortName, placeholder='Enter entity short name')
         
         .form-actions
           button.btn.btn-primary(type='submit') Save changes

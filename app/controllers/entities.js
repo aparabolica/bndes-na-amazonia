@@ -13,7 +13,8 @@ var mongoose = require('mongoose')
  */
 
 exports.load = function(req, res, next, id){
-
+  var User = mongoose.model('User')
+  
   Entity.load(id, function (err, entity) {
     if (err) return next(err)
     if (!entity) return next(new Error('not found'))
@@ -65,7 +66,7 @@ exports.new = function(req, res){
 
 exports.create = function (req, res) {
   var entity = new Entity(req.body)
-  entity.user = req.user
+  entity.createdByUser = req.user
 
   entity.save( function (err) {
     if (!err) {
@@ -73,7 +74,7 @@ exports.create = function (req, res) {
       return res.redirect('/entities/'+entity._id)
     }
 
-    res.render('entity/new', {
+    res.render('entities/new', {
       title: 'New entity',
       entity: entity,
       errors: utils.errors(err.errors || err)
@@ -98,7 +99,28 @@ exports.show = function(req, res){
 
 exports.edit = function (req, res) {
   res.render('entities/edit', {
-    title: 'Edit ' + req.entity.name,
+    title: 'Edit ' + req.entity.shortName,
     entity: req.entity
+  })
+}
+
+/**
+ * Update article
+ */
+
+exports.update = function(req, res){
+  var entity = req.entity
+  entity = _.extend(entity, req.body)
+
+  entity.save( function(err) {
+    if (!err) {
+      return res.redirect('/entities/' + entity._id)
+    }
+
+    res.render('entities/edit', {
+      title: 'Edit ' + req.entity.shortName,
+      entity: entity,
+      errors: err.errors
+    })
   })
 }

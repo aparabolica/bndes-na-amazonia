@@ -8,7 +8,7 @@ block content
     - each entity in entities
       .entity
         h3
-          a(href='/entities/'+entity._id, title=entity.name) #{entity.name}
+          a(href='/entities/'+entity._id, title=entity.shortName) #{entity.shortName}
         p= entity.profile
 
         .meta.muted
