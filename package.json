@@ -1,6 +1,6 @@
 {
-  "name": "nodejs-express-mongoose-demo",
-  "description": "A demo app illustrating the usage of express, mongoose, passportjs, jade and other modules in nodejs",
+  "name": "elos",
+  "description": "A mapping application",
   "keywords": [
     "express",
     "mongoose",
@@ -8,12 +8,12 @@
     "passport",
     "demo"
   ],
-  "version": "3.0.0",
+  "version": "0.0.1",
   "private": false,
-  "author": "Madhusudhan Srinivasa <madhums8@gmail.com> (http://madhums.github.com)",
+  "author": "Vitor George <vitor.george@gmail.com>",
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/madhums/node-express-mongoose-demo.git"
+    "url" : "https://github.com/vgeorge/elos.git"
   },
   "engines": {
     "node": "0.10.x",
