@@ -1,0 +1,40 @@
+extends ../layouts/default
+
+block main
+  h1 Admin area
+
+block content
+  div
+    h2 Data collections
+    table.table
+      thead
+        tr
+          th
+            .text-center Collection
+          th
+            .text-center Status
+          th
+            .text-center Actions
+      tbody
+        tr
+          td
+            .text-center Economic Activities
+            p= economicActivitiesCount
+          - if (economicActivitiesCount > 0)
+            td
+              .text-center= economicActivitiesCount
+          - else
+            td
+              .text-center Empty            
+          td
+            .text-center 
+              a.btn(href='/admin/db/clear') Load
+        tr
+          td
+            .text-center Cities
+          td
+            .text-center Empty            
+          td
+            .text-center 
+              a.btn(href='/admin/db/clear') Load
+

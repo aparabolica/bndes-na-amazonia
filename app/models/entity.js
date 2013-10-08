@@ -15,9 +15,13 @@ var mongoose = require('mongoose')
  */
 
 var EntitySchema = new Schema({
-  slug: {type : String, default : '', trim : true},
-  name: {type : String},
-  links: {type : []},
+  name: {
+    short: String,
+    official:  String
+  },
+  url: {
+    homepage: String
+  },
   profile: {type : String, default : '', trim : true},
   image: {
     cdnUri: String,

@@ -1,6 +1,6 @@
 # Elos 
 
-A mapping app.
+A mapping application.
 
 ## Install
 
@@ -23,6 +23,14 @@ Then visit [http://localhost:3000/](http://localhost:3000/)
 ```sh
 $ npm test
 ```
+
+## Todo
+
+- [ ] load city information as value types
+- [ ] load cnae codes as value types from json
+- [ ] remove autentication from third party sites
+- [ ] application title
+- [ ] find by slug
 
 ## License
 (The MIT License)

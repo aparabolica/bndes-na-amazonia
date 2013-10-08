@@ -11,6 +11,7 @@ var async = require('async')
 var users = require('../app/controllers/users')
   , articles = require('../app/controllers/articles')
   , entities = require('../app/controllers/entities')
+  , admin = require('../app/controllers/admin')
   , auth = require('./middlewares/authorization')
 
 /**
@@ -111,6 +112,9 @@ module.exports = function (app, passport) {
   
   // home route
   app.get('/', entities.index)
+
+  // admin route
+  app.get('/admin', admin.index)
 
   // comment routes
   var comments = require('../app/controllers/comments')
