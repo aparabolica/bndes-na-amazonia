@@ -9,7 +9,7 @@ var async = require('async')
  */
 
 var users = require('../app/controllers/users')
-  , articles = require('../app/controllers/articles')
+  , projects = require('../app/controllers/projects')
   , entities = require('../app/controllers/entities')
   , admin = require('../app/controllers/admin')
   , auth = require('./middlewares/authorization')
@@ -88,38 +88,34 @@ module.exports = function (app, passport) {
 
   app.param('userId', users.user)
 
-  // article routes
-  app.get('/articles', articles.index)
-  app.get('/articles/new', auth.requiresLogin, articles.new)
-  app.post('/articles', auth.requiresLogin, articles.create)
-  app.get('/articles/:id', articles.show)
-  app.get('/articles/:id/edit', articleAuth, articles.edit)
-  app.put('/articles/:id', articleAuth, articles.update)
-  app.del('/articles/:id', articleAuth, articles.destroy)
+  // prject routes
+  app.get('/projects', projects.index)
+  // app.get('/projects/new', auth.requiresLogin, projects.new)
+  // app.post('/projects', auth.requiresLogin, projects.create)
+  // app.get('/projects/:id', projects.show)
+  // app.get('/projects/:id/edit', projectAuth, projects.edit)
+  // app.put('/projects/:id', projectAuth, projects.update)
+  // app.del('/projects/:id', projectAuth, projects.destroy)
 
-  app.param('id', articles.load)
+//  app.param('id', articles.load)
   
   // entity routes
-  app.get('/entities', entities.index)
-  app.get('/entities/new', auth.requiresLogin, entities.new)
-  app.post('/entities', auth.requiresLogin, entities.create)
-  app.get('/entities/:entityId', entities.show)
-  app.get('/entities/:entityId/edit', articleAuth, entities.edit)
+  // app.get('/entities', entities.index)
+  // app.get('/entities/new', auth.requiresLogin, entities.new)
+  // app.post('/entities', auth.requiresLogin, entities.create)
+  // app.get('/entities/:entityId', entities.show)
+  // app.get('/entities/:entityId/edit', articleAuth, entities.edit)
   // app.put('/entities/:id', articleAuth, entities.update)
   // app.del('/entities/:id', articleAuth, entities.destroy)
   
   app.param('entityId', entities.load)
   
   // home route
-  app.get('/', entities.index)
+  app.get('/', projects.index)
 
-  // admin route
+  // admin routes
   app.get('/admin', admin.index)
-
-  // comment routes
-  var comments = require('../app/controllers/comments')
-  app.post('/articles/:id/comments', auth.requiresLogin, comments.create)
-  app.get('/articles/:id/comments', auth.requiresLogin, comments.create)
+  app.get('/admin/populate', admin.populate)
 
   // tag routes
   var tags = require('../app/controllers/tags')

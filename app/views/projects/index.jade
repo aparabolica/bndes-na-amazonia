@@ -1,0 +1,37 @@
+extends ../layouts/default
+
+block main
+  h1 Projetos mapeados
+
+block content
+  - if (projects.length)
+    - each project in projects
+      .project
+        h3
+          a(href='/projects/'+project._id, title=project.title) #{project.title}
+        p= project.body
+
+        .meta.muted
+          span= formatDate(project.createdAt)
+          &nbsp; - &nbsp;
+          - if (project.user)
+            span Author &nbsp;
+
+            - var name = project.user.name ? project.user.name : project.user.username
+
+            a(href="/users/"+project.user._id)= name
+          &nbsp; - &nbsp;
+          - if (project.tags)
+            - each tag in project.tags.split(',')
+              &nbsp;
+              a.tag(href="/tags/"+tag)
+                i.icon-tags
+                |  #{tag}
+
+    - if (pages > 1)
+      .pagination
+        ul
+          != createPagination(pages, page)
+  - else
+    p.muted No projects.&nbsp;
+      a(href="/projects/new") create one

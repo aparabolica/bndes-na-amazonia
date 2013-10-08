@@ -10,6 +10,7 @@ var mongoose = require('mongoose')
   , context = describe
   , User = mongoose.model('User')
   , EconomicActivity = mongoose.model('EconomicActivity')
+  , States = mongoose.model('States')
   , agent = request.agent(app)
   
 /**
@@ -40,39 +41,46 @@ describe('Admin controller', function(){
       .get('/admin')
       .expect('Content-Type', /html/)
       .expect(200)
-      .expect(/Data collections/)
+      .expect(/Coleções de dados/)
       .end(done)
     })
   })
   
   describe('Data Collections', function(){
-    before(function(done){
-      // Clear CNAE Classes
-      EconomicActivity.collection.remove(done)
-    })
-    
-    it('should show Cities and CNAE Classes collections as empty', function(done){
-      agent
-      .get('/admin')
-      .expect('Content-Type', /html/)
-      .expect(200)
-      .expect(/Empty/)
-      .end(done)
+    context('collections are empty', function(){
+      before(function(done){
+        EconomicActivity.collection.remove(function(){
+          States.collection.remove(done)
+        })
+      })
+
+      it('should show warning when collections are not loaded', function(done){
+        agent
+        .get('/admin')
+        .expect('Content-Type', /html/)
+        .expect(200)
+        .expect(/não há setores carregados/)
+        .expect(/não há estados carregados/)
+        .end(done)
+      })
     })
     
     it('should import economic activities from CSV', function(done){
       EconomicActivity.loadCSV(function(err){
-        if (!err) {
+        should.not.exist(err)
+        States.loadCSV(function(err){
+          should.not.exist(err)
           agent
           .get('/admin')
           .expect('Content-Type', /html/)
           .expect(200)
-          .expect(/2384 activities loaded/)
+          .expect(/2384 setores/)
+          .expect(/27 estados/)
           .end(done)
-        }
+        })        
       })
     })
     
-    it('should import city list (IBGE) from csv')  
+    it('should import state list (IBGE) from csv')  
   })  
 })
