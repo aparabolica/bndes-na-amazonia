@@ -18,7 +18,7 @@ var users = require('../app/controllers/users')
  * Route middlewares
  */
 
-var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
+var projectAuth = [auth.requiresLogin]
 
 /**
  * Expose routes
@@ -90,14 +90,14 @@ module.exports = function (app, passport) {
 
   // prject routes
   app.get('/projects', projects.index)
-  // app.get('/projects/new', auth.requiresLogin, projects.new)
-  // app.post('/projects', auth.requiresLogin, projects.create)
-  // app.get('/projects/:id', projects.show)
-  // app.get('/projects/:id/edit', projectAuth, projects.edit)
-  // app.put('/projects/:id', projectAuth, projects.update)
-  // app.del('/projects/:id', projectAuth, projects.destroy)
-
-//  app.param('id', articles.load)
+  app.get('/projects/new', auth.requiresLogin, projects.new)
+  app.post('/projects', auth.requiresLogin, projects.create)
+  app.get('/projects/:projectId', projects.show)
+  app.get('/projects/:projectId/edit', projectAuth, projects.edit)
+  app.put('/projects/:projectId', projectAuth, projects.update)
+  app.del('/projects/:projectId', projectAuth, projects.destroy)
+ 
+  app.param('projectId', projects.load)
   
   // entity routes
   // app.get('/entities', entities.index)

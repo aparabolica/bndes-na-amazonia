@@ -13,7 +13,11 @@ var mongoose = require('mongoose')
 
 var ProjectSchema = new Schema({
   title: {type : String, default : '', trim : true},
+  officialName: {type : String, default : '', trim : true},
   description: {type : String, default : '', trim : true},
+  contractDate: Date,
+  contractValue: Number,
+  influencedStates: [String],
   createdAt  : {type : Date, default : Date.now}
 })
 
@@ -23,11 +27,11 @@ var ProjectSchema = new Schema({
 
 ProjectSchema.path('title').validate(function (title) {
   return (title.length > 10 && title.length <= 80) 
-}, 'Título do projeto deve ter entre 10 e 80 caracteres')
+}, 'O título do projeto deve ter entre 10 e 80 caracteres')
 
 ProjectSchema.path('description').validate(function (description) {
   return (description.length > 10 && description.length <= 500) 
-}, 'Descrição do projeto deve ter entre 10 e 500 caracteres')
+}, 'A descrição do projeto deve ter entre 10 e 500 caracteres')
 
 /**
  * Statics
@@ -35,13 +39,11 @@ ProjectSchema.path('description').validate(function (description) {
 
 ProjectSchema.statics = {
 
-  /**
-   * List projects
-   *
-   * @param {Object} options
-   * @param {Function} cb
-   * @api private
-   */
+
+  load: function (id, done) {
+    this.findOne({ _id : id })
+      .exec(done)
+  },
 
   list: function (options, cb) {
     var criteria = options.criteria || {}
