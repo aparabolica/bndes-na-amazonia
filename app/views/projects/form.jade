@@ -22,73 +22,27 @@ block content
           .controls
             input#title.input-xlarge(type='text', name="title", value=project.title, placeholder='Até 50 caracteres.')
 
-        .control-group
-          label.control-label(for='officialName') Nome oficial
-          .controls
-            textarea#title.input-xlarge(type='text', rows="3", name="officialName", placeholder='Denominação do projeto utilizada pelo orgão responsável.')= project.officialName
 
         .control-group
           label.control-label(for='description') Descrição
           .controls
             textarea#desc.input-xlarge(type='text', rows="5", name="description", placeholder='Descrição resumida do projeto.')=project.description
-
-        .control-group
-          label.control-label(for='contractDate') Data de contratação
-          .controls
-            input#contractDate.input-xlarge(type='date', name="contractDate", value=project.contractDate)
-
-        .control-group
-           label.control-label(for='contractedValue') Valor contratado
-           .controls
-             input#title.input-xlarge(type='number', name="contractedValue", value=project.contractedValue, placeholder='Digite um valor...')
-                 
-        .control-group
-          label.control-label(for='states') Estados de Influência
-          .controls
-            select(class='chosen-select', data-placeholder="Digite para buscar..." name="states", value=project.states, multiple)
-              option(value="")
-              optgroup(label="Norte")
-                option(value="AC") Acre
-                option(value="AP") Amapá
-                option(value="AM") Amazonas
-                option(value="PA") Pará
-                option(value="RO") Rondônia
-                option(value="RR") Roraima
-              optgroup(label="Nordeste")
-                option(value="AL") Alagoas
-                option(value="BA") Bahia
-                option(value="CE") Ceará
-                option(value="MA") Maranhão
-                option(value="PB") Paraíba
-                option(value="PE") Pernambuco
-                option(value="PI") Piauí
-                option(value="RN") Rio Grande do Norte
-                option(value="SE") Sergipe
-              optgroup(label="Centro-Oeste")
-                option(value="DF") Distrito Federal
-                option(value="GO") Goiás
-                option(value="MT") Mato Grosso
-                option(value="MS") Mato Grosso do Sul
-              optgroup(label="Sudeste")
-                option(value="ES") Espírito Santo
-                option(value="MG") Minas Gerais
-                option(value="RJ") Rio de Janeiro
-                option(value="SP") São Paulo
-              optgroup(label="Sul")
-                option(value="PR") Paraná
-                option(value="RS") Rio Grande do Sul
-                option(value="SC") Santa Catarina
                 
         .control-group
-          label.control-label(for='tags') Tags
+          label.control-label(for='states') 
+            | Estados
+            project.places.lenght
           .controls
-            input#tags(type='text', name="tags", value=project.tags, placeholder='Enter the tags')
+            select(class='chosen-select', data-placeholder="Escolha os estados afetados..." name="places.states", multiple)
+              option(value="")
+              - each state in ["Acre","Alagoas","Amapá","Amazonas","Bahia","Ceará","Distrito Federal","Espírito Santo","Goiás","Maranhão","Mato Grosso","Mato Grosso do Sul","Minas Gerais","Pará","Paraíba","Paraná","Pernambuco","Piauí","Rio de Janeiro","Rio Grande do Norte","Rio Grande do Sul","Rondônia","Roraima","Santa Catarina","São Paulo","Sergipe","Tocantins"]
+                - var isSelected = false
+                - each selectedState in project.places.states
+                  - if (state == selectedState) 
+                    - isSelected = true
+                option(selected=isSelected)= state
 
         .form-actions
           button.btn.btn-primary(type='submit') Save changes
           &nbsp;
           a.btn(href='/projects', title="cancel") Cancel
-
-    .span5
-      - if (!project.isNew && project.image && project.image.files && project.image.files.length)
-        img(src=project.image.cdnUri + "/mini_" + project.image.files[0])

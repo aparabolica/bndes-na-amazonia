@@ -65,7 +65,7 @@ exports.new = function(req, res){
 
 exports.create = function (req, res) {
   var project = new Project(req.body)
-
+  console.log(req.body)
   project.save(function (err) {
     if (!err) {
       req.flash('success', 'Successfully created project!')

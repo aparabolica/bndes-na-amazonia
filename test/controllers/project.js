@@ -103,14 +103,31 @@ describe('Projects controller', function () {
           })
         })
   
-        it('should respond with error', function (done) {
+        it('should respond with error if empty values', function (done) {
           agent
           .post('/projects')
           .field('title', '')
-          .field('body', 'foo')
+          .field('description', '')
+          .field('state', 'dsdsa')
           .expect('Content-Type', /html/)
           .expect(200)
-          .expect(/Project title cannot be blank/)
+          .expect(/O título do projeto deve ter entre 10 e 80 caracteres/)
+          .expect(/A descrição do projeto deve ter entre 10 e 500 caracteres/)
+          .expect(/Escolha ao menos um estado./)
+          .end(done)
+        })
+
+        it('should respond with error if invalid properties', function (done) {
+          agent
+          .post('/projects')
+          .field('title', new Array(82).join('b'))
+          .field('description', new Array(502).join('a'))
+          .field('state', 'dsdsa')
+          .expect('Content-Type', /html/)
+          .expect(200)
+          .expect(/O título do projeto deve ter entre 10 e 80 caracteres/)
+          .expect(/A descrição do projeto deve ter entre 10 e 500 caracteres/)
+          .expect(/Nome de estado inválido./)
           .end(done)
         })
   

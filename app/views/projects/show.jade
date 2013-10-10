@@ -1,0 +1,13 @@
+extends ../layouts/default
+
+block main
+  h1= project.title
+
+block content
+  p=project.description
+  p Estados afetados
+  ul  
+    - each state in project.places.states
+      li=state
+    
+
