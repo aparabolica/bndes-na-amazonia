@@ -113,7 +113,7 @@ describe('Projects controller', function () {
           .expect(200)
           .expect(/O título do projeto deve ter entre 10 e 80 caracteres/)
           .expect(/A descrição do projeto deve ter entre 10 e 500 caracteres/)
-          .expect(/Escolha ao menos um estado./)
+          .expect(/Selecione ao menos 1 estado./)
           .end(done)
         })
 
@@ -127,7 +127,6 @@ describe('Projects controller', function () {
           .expect(200)
           .expect(/O título do projeto deve ter entre 10 e 80 caracteres/)
           .expect(/A descrição do projeto deve ter entre 10 e 500 caracteres/)
-          .expect(/Nome de estado inválido./)
           .end(done)
         })
   
@@ -147,13 +146,14 @@ describe('Projects controller', function () {
           })
         })
   
-        it('should redirect to the new article page', function (done) {
+        it('should redirect to the new project page', function (done) {
           agent
-          .post('/articles')
-          .field('title', 'foo')
-          .field('body', 'bar')
+          .post('/projects')
+          .field('title', 'Nulla laoreet augue ultricies')
+          .field('description', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec urna urna, imperdiet sed nunc vel, pharetra dapibus est. Ut purus libero, suscipit quis commodo quis, venenatis eget libero.')
+          .field('places.states','[\'Pará\',\'São Paulo\']')
           .expect('Content-Type', /plain/)
-          .expect('Location', /\/articles\//)
+          .expect('Location', /\/projects\//)
           .expect(302)
           .expect(/Moved Temporarily/)
           .end(done)
@@ -166,17 +166,16 @@ describe('Projects controller', function () {
           })
         })
   
-        it('should save the article to the database', function (done) {
+        it('should save the project to the database', function (done) {
           Project
-          .findOne({ title: 'foo'})
-          .populate('user')
-          .exec(function (err, article) {
+          .findOne({ title: 'Nulla laoreet augue ultricies'})
+          .exec(function (err, project) {
             should.not.exist(err)
-            article.should.be.an.instanceOf(Project)
-            article.title.should.equal('foo')
-            article.body.should.equal('bar')
-            article.user.email.should.equal('foobar@example.com')
-            article.user.name.should.equal('Foo bar')
+            project.should.be.an.instanceOf(Project)
+            project.title.should.equal('Nulla laoreet augue ultricies')
+            project.description.should.equal('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec urna urna, imperdiet sed nunc vel, pharetra dapibus est. Ut purus libero, suscipit quis commodo quis, venenatis eget libero.')
+            project.places.states[0].should.include('Pará')
+            project.places.states[0].should.include('São Paulo')            
             done()
           })
         })
