@@ -5,9 +5,21 @@ block main
 
 block content
   p=project.description
-  p Estados afetados
+  h2 Estados afetados
   ul  
     - each state in project.places.states
       li=state
+  h2 Financiamentos
+  p 
+    |Total: 
+    =project.financingTotal
+  ul  
+    each financing in project.financings
+      li
+        =financing._id
+        | (
+        =financing.amount
+        |  reais)
+
     
 

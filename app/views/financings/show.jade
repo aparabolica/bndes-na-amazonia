@@ -1,0 +1,23 @@
+extends ../layouts/default
+
+block main
+  h1= financing.title
+
+block content
+  h2 Descrição
+  p=financing.description
+  h2 Projeto Beneficiado
+  p=financing.project.title
+  h2 Montante
+  p=financing.amount
+  h2 Contratação
+  p= financing.contractDate
+  
+  p
+    br
+    form.center.form-inline.confirm(action="/financings/"+financing._id, method="post")
+      input(type='hidden', name='_csrf', value="#{csrf_token}")
+      a.btn(href='/financings/'+financing._id+'/edit', title="edit") Edit
+      &nbsp;&nbsp;
+      input(type="hidden", name="_method", value="DELETE")
+      button.btn.btn-danger(type="submit") delete

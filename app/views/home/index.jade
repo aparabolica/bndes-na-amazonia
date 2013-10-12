@@ -1,7 +1,7 @@
 extends ../layouts/default
 
 block main
-  h1 Projetos mapeados
+  h1 Projetos na Amazônia
 
 block content
   - if (projects.length)
@@ -9,17 +9,11 @@ block content
       .project
         h3
           a(href='/projects/'+project._id, title=project.title) #{project.title}
-        p 
-          | Montante Financiado: 
-          =project.financingTotal
-        p
-          | Descrição: 
-          = project.description
-
+        p=project.description
     - if (pages > 1)
       .pagination
         ul
           != createPagination(pages, page)
   - else
-    p.muted No projects.&nbsp;
-      a(href="/projects/new") create one
+    p.muted Sem projetos cadastrados.&nbsp;
+      a(href="/projects/new") Criar um

@@ -1,0 +1,29 @@
+extends ../layouts/default
+
+block main
+  h1 Financiamentos
+
+block content
+  p
+    a(href="/financings/new") Novo financiamento
+  - if (financings.length)
+    - each financing in financings
+      .financing
+        h3
+          a(href='/financings/'+financing._id, title=financing.title) #{financing.title}
+        p 
+          | Projeto: 
+          =financing.project.title        
+        p 
+          | Montante: 
+          =financing.amount
+        p
+          | Descrição: 
+          = financing.description
+
+    - if (pages > 1)
+      .pagination
+        ul
+          != createPagination(pages, page)
+  - else
+    p.muted Não há financiamentos mapeados.&nbsp;

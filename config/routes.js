@@ -9,8 +9,9 @@ var async = require('async')
  */
 
 var users = require('../app/controllers/users')
+  , home = require('../app/controllers/home')
   , projects = require('../app/controllers/projects')
-  , entities = require('../app/controllers/entities')
+  , financings = require('../app/controllers/financings')
   , admin = require('../app/controllers/admin')
   , auth = require('./middlewares/authorization')
 
@@ -88,7 +89,7 @@ module.exports = function (app, passport) {
 
   app.param('userId', users.user)
 
-  // prject routes
+  // project routes
   app.get('/projects', projects.index)
   app.get('/projects/new', auth.requiresLogin, projects.new)
   app.post('/projects', auth.requiresLogin, projects.create)
@@ -98,20 +99,20 @@ module.exports = function (app, passport) {
   app.del('/projects/:projectId', projectAuth, projects.destroy)
  
   app.param('projectId', projects.load)
-  
-  // entity routes
-  // app.get('/entities', entities.index)
-  // app.get('/entities/new', auth.requiresLogin, entities.new)
-  // app.post('/entities', auth.requiresLogin, entities.create)
-  // app.get('/entities/:entityId', entities.show)
-  // app.get('/entities/:entityId/edit', articleAuth, entities.edit)
-  // app.put('/entities/:id', articleAuth, entities.update)
-  // app.del('/entities/:id', articleAuth, entities.destroy)
-  
-  app.param('entityId', entities.load)
-  
+
+  // financings routes
+  app.get('/financings', financings.index)
+  app.get('/financings/new', auth.requiresLogin, financings.new)
+  app.post('/financings', auth.requiresLogin, financings.create)
+  app.get('/financings/:financingId', financings.show)
+  app.get('/financings/:financingId/edit', auth.requiresLogin, financings.edit)
+  app.put('/financings/:financingId', auth.requiresLogin, financings.update)
+  app.del('/financings/:financingId',  auth.requiresLogin, financings.destroy)
+  //  
+  app.param('financingId', financings.load)
+    
   // home route
-  app.get('/', projects.index)
+  app.get('/', home.index)
 
   // admin routes
   app.get('/admin', admin.index)

@@ -1,0 +1,61 @@
+extends ../layouts/default
+
+
+block main
+  h1= title
+  hr
+
+block content
+  - var action = '/financings'
+  - action += financing.isNew? '' : '/' + financing.id
+  .row
+    .span7
+      form.form-horizontal(method="post", action=action, enctype="multipart/form-data")
+
+        input(type="hidden", name="_csrf", value="#{csrf_token}")
+
+        - if (!financing.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .control-group
+          label.control-label(for='title') Título
+          .controls
+            input#title.input-xlarge(type='text', name="title", value=financing.title, placeholder='Identificação do financiamento.')
+
+        .control-group
+          label.control-label(for='description') Descrição
+          .controls
+            textarea#desc.input-xlarge(type='text', rows="5", name="description", placeholder='Descrição resumida do financiamento.')=financing.description
+
+        .control-group
+          label.control-label(for='project') Projeto
+          .controls
+            - var project_id
+            - if ((financing.project) && (financing.project._id))
+              - project_id = financing.project._id
+            - else 
+              - project_id = financing.project
+            select(class='chosen-select', data-placeholder="Escolha o projeto financiado..." name="project")
+                - if (projects)
+                    - each project in projects
+                      option(value=project._id,selected=(project_id==project._id.toString() ))=project.title
+
+  
+        .control-group
+          label.control-label(for='amount') Montante
+          .controls
+            input#amount.input-xlarge(type='text', name="amount", placeholder='Valor do financiamento.', value=financing.amount)
+
+        .control-group
+          label.control-label(for='contractDate') Data
+          .controls
+            - var contractDateInputValue = ''
+            - if (financing.contractDate)
+              - contractDateInputValue =  financing.contractDate.toISOString().slice(0,10)
+            input#desc.input-xlarge(type='date', name="contractDate", value=contractDateInputValue)
+
+
+        .form-actions
+          button.btn.btn-primary(type='submit') Salvar
+          &nbsp;
+          a.btn(href='/financings', title="cancel") Cancelar

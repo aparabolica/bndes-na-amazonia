@@ -2,15 +2,13 @@ header#header
   .navbar.navbar-fixed-top(role='navigation')
     .navbar-inner
       .container
-        a.brand(href='/') Elos
+        a.brand(href='/') BNDES na Amazônia
         .nav-collapse.collapse
           ul.nav
             li
-              a(href="/projects/", title="Projects") Projects
+              a(href="/projects/", title="Projetos") Projetos
             li
-              a(href="/companies/", title="Companies") Companies
-            li
-              a(href="/government/", title="Government") Government
+              a(href="/financings/", title="Financiamentos") Financiamentos
           
           ul.nav.pull-right
             if (req.isAuthenticated())
