@@ -3,6 +3,7 @@
  */
 
 var mongoose = require('mongoose')
+  , Quiche = require('quiche')
   , env = process.env.NODE_ENV || 'development'
   , config = require('../../config/config')[env]
   , Schema = mongoose.Schema
@@ -61,6 +62,18 @@ ProjectSchema.methods = {
         })
         self.save(done)
       })
+  },
+  
+  chartImageUrl: function() {
+    var self = this
+      , pie = new Quiche('pie');
+    pie.setTransparentBackground()
+    console.log(self.financings)    
+    _.each(self.financings, function(financing){
+      financing
+      pie.addData(financing.amount, financing.title, 'FF0000');      
+    })
+    return pie.getUrl(true)
   }
 
 }

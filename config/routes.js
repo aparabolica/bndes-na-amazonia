@@ -64,7 +64,7 @@ module.exports = function (app, passport) {
   app.param('financingId', financings.load)
     
   // home route
-  app.get('/', home.index)
+  app.get('/', projects.index)
 
   // admin routes
   app.get('/admin', admin.index)

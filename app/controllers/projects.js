@@ -5,6 +5,7 @@
 
 var mongoose = require('mongoose')
   , Project = mongoose.model('Project')
+  , Quiche = require('quiche')  
   , utils = require('../../lib/utils')
   , _ = require('underscore')
 
@@ -36,13 +37,14 @@ exports.index = function(req, res){
   }
 
   Project.list(options, function(err, projects) {
-    if (err) return res.render('500')
+    if (err) return res.render('500')    
     Project.count().exec(function (err, count) {
       res.render('projects/index', {
         title: 'projects',
         projects: projects,
         page: page + 1,
-        pages: Math.ceil(count / perPage)
+        pages: Math.ceil(count / perPage),
+        Quiche: Quiche
       })
     })
   })  
