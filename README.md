@@ -4,13 +4,12 @@ A mapping application.
 
 ## Install
 
-**NOTE:** You need to have node.js, mongodb and [imagemagick](http://www.imagemagick.org/script/index.php) installed and running.
+**NOTE:** You need to have node.js and mongodb installed and running.
 
 ```sh
   $ git clone git://github.com/vgeorge/elos.git
   $ npm install
   $ cp config/config.example.js config/config.js
-  $ cp config/imager.example.js config/imager.js
   $ npm start
 ```
 
@@ -23,14 +22,6 @@ Then visit [http://localhost:3000/](http://localhost:3000/)
 ```sh
 $ npm test
 ```
-
-## Todo
-
-- [ ] load city information as value types
-- [ ] load cnae codes as value types from json
-- [ ] remove autentication from third party sites
-- [ ] application title
-- [ ] find by slug
 
 ## License
 (The MIT License)
