@@ -15,7 +15,8 @@ var path = require('path')
 
 module.exports = {
   development: {
-    db: 'mongodb://localhost/elos_dev',
+    db: process.env.MONGOLAB_URI ||
+      process.env.MONGOHQ_URL || 'mongodb://localhost/elos_dev',
     root: rootPath,
     notifier: notifier,
     app: {
@@ -48,7 +49,8 @@ module.exports = {
     }
   },
   test: {
-    db: 'mongodb://localhost/elos_test',
+    db: process.env.MONGOLAB_URI ||
+      process.env.MONGOHQ_URL || 'mongodb://localhost/elos_test',
     root: rootPath,
     notifier: notifier,
     app: {
@@ -81,7 +83,8 @@ module.exports = {
     }
   },
   production: {
-    db: 'mongodb://localhost/heroku_app18624412',
+    db: process.env.MONGOLAB_URI ||
+      process.env.MONGOHQ_URL || 'mongodb://localhost/heroku_app18624412',
     root: rootPath,
     notifier: notifier,
     app: {
