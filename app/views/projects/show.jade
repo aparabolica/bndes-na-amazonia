@@ -7,7 +7,7 @@ block content
   p=project.description
   h2 Estados afetados
   ul  
-    - each state in project.places.states
+    - each state in project.states
       li=state
   h2 Financiamentos
   p 
@@ -20,6 +20,11 @@ block content
         | (
         =financing.amount
         |  reais)
-
-    
-
+  p
+    br
+    form.center.form-inline.confirm(action="/projects/"+project._id, method="post")
+      input(type='hidden', name='_csrf', value="#{csrf_token}")
+      a.btn(href='/projects/'+project._id+'/edit', title="Editar") Editar
+      &nbsp;&nbsp;
+      input(type="hidden", name="_method", value="DELETE")
+      button.btn.btn-danger(type="submit") Apagar

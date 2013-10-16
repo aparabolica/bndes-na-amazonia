@@ -4,7 +4,7 @@
  */
 
 var mongoose = require('mongoose')
-  , EconomicActivity = mongoose.model('EconomicActivity')
+  , Activity = mongoose.model('Activity')
   , States = mongoose.model('States')
   , utils = require('../../lib/utils')
   
@@ -14,7 +14,7 @@ var mongoose = require('mongoose')
  */
 
 exports.index = function(req, res){
-  EconomicActivity.count(function(err, economicActivitiesCount){
+  Activity.count(function(err, economicActivitiesCount){
     States.count(function(err, statesCount){
       if (err) res.render(500)
       res.render('admin/index', {
@@ -31,7 +31,7 @@ exports.index = function(req, res){
  */
 
 exports.populate = function(req,res) {
-  EconomicActivity.loadCSV(function(err){
+  Activity.loadCSV(function(err){
   	if (err) req.flash('error', 'Erro ao carregar setores de atividade econômica')
   	States.loadCSV(function(err){
   		if (err) req.flash('error', 'Erro ao carregar estados')

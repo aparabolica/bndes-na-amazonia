@@ -4,18 +4,12 @@ $(document).ready(function () {
   $('.confirm').submit(function (e) {
     e.preventDefault();
     var self = this;
-    var msg = 'Are you sure?';
-    bootbox.confirm(msg, 'cancel', 'Yes! I am sure', function (action) {
+    var msg = 'Você tem certeza?';
+    bootbox.confirm(msg, 'cancel', 'Sim, estou certo', function (action) {
       if (action) {
         $(self).unbind('submit');
         $(self).trigger('submit');
       }
     });
   });
-
-  $('#tags').tagsInput({
-    'height':'60px',
-    'width':'280px'
-  });
-
 });

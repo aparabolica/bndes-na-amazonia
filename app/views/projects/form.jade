@@ -31,13 +31,13 @@ block content
         .control-group
           label.control-label(for='states') 
             | Estados
-            project.places.lenght
+            project.states.lenght
           .controls
-            select(class='chosen-select', data-placeholder="Escolha os estados afetados..." name="places.states", multiple)
+            select(class='chosen-select', data-placeholder="Escolha os estados afetados..." name="states", multiple)
               option(value="")
               - each state in ["Acre","Alagoas","Amapá","Amazonas","Bahia","Ceará","Distrito Federal","Espírito Santo","Goiás","Maranhão","Mato Grosso","Mato Grosso do Sul","Minas Gerais","Pará","Paraíba","Paraná","Pernambuco","Piauí","Rio de Janeiro","Rio Grande do Norte","Rio Grande do Sul","Rondônia","Roraima","Santa Catarina","São Paulo","Sergipe","Tocantins"]
                 - var isSelected = false
-                - each selectedState in project.places.states
+                - each selectedState in project.states
                   - if (state == selectedState) 
                     - isSelected = true
                 option(selected=isSelected)= state

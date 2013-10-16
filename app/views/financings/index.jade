@@ -11,9 +11,10 @@ block content
       .financing
         h3
           a(href='/financings/'+financing._id, title=financing.title) #{financing.title}
-        p 
-          | Projeto: 
-          =financing.project.title        
+        - if (financing.project)
+          p 
+            | Projeto: 
+            =financing.project.title        
         p 
           | Montante: 
           =financing.amount

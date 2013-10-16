@@ -25,14 +25,7 @@ block content
         - pie.addData(1500, 'Bar', '00FF00');
         - var imageUrl = pie.getUrl(true);
         img(src=imageUrl)
-
-        
-        
-
     - if (pages > 1)
       .pagination
         ul
           != createPagination(pages, page)
-  - else
-    p.muted No projects.&nbsp;
-      a(href="/projects/new") create one

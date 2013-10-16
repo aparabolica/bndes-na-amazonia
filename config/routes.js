@@ -12,6 +12,7 @@ var users = require('../app/controllers/users')
   , home = require('../app/controllers/home')
   , projects = require('../app/controllers/projects')
   , financings = require('../app/controllers/financings')
+  , organizations = require('../app/controllers/organizations')
   , admin = require('../app/controllers/admin')
   , auth = require('./middlewares/authorization')
 
@@ -62,6 +63,17 @@ module.exports = function (app, passport) {
   app.del('/financings/:financingId',  auth.requiresLogin, financings.destroy)
   //  
   app.param('financingId', financings.load)
+
+  // organization routes
+  app.get('/organizations', organizations.index)
+  app.get('/organizations/new', auth.requiresLogin, organizations.new)
+  app.post('/organizations', auth.requiresLogin, organizations.create)
+  app.get('/organizations/:organizationId', organizations.show)
+  // app.get('/organizations/:organizationId/edit', auth.requiresLogin, organizations.edit)
+  // app.put('/organizations/:organizationId', auth.requiresLogin, organizations.update)
+  // app.del('/organizations/:organizationId',  auth.requiresLogin, organizations.destroy)
+  //  
+  app.param('organizationId', organizations.load)
     
   // home route
   app.get('/', projects.index)
@@ -70,8 +82,5 @@ module.exports = function (app, passport) {
   app.get('/admin', admin.index)
   app.get('/admin/populate', admin.populate)
 
-  // tag routes
-  var tags = require('../app/controllers/tags')
-  app.get('/tags/:tag', tags.index)
 
 }

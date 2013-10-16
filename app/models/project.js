@@ -21,9 +21,7 @@ var ProjectSchema = new Schema({
   description: {type : String, default : '', trim : true},
   financings: [{type : Schema.ObjectId, ref : 'Financing'}],
   financingTotal: {type: Number, default: 0},
-  places: {
-    states: [{type:String, enum: allStates}]
-  },
+  states: [{type:String, enum: allStates}],
   createdAt  : {type : Date, default : Date.now}
 })
 
@@ -32,16 +30,16 @@ var ProjectSchema = new Schema({
  */
 
 ProjectSchema.path('title').validate(function (title) {
-  return (title.length > 10 && title.length <= 80) 
-}, 'O título do projeto deve ter entre 10 e 80 caracteres')
+  return (title.length > 5 && title.length <= 80) 
+}, 'O título do projeto deve ter entre 5 e 80 caracteres')
 
 ProjectSchema.path('description').validate(function (description) {
   return (description.length > 10 && description.length <= 500) 
 }, 'A descrição do projeto deve ter entre 10 e 500 caracteres')
 
-ProjectSchema.path('places.states').validate(function (states) {
+ProjectSchema.path('states').validate(function (states) {
   return (states.length > 0) 
-}, 'Selecione ao menos 1 estado.')
+}, 'Selecione ao menos um estado.')
 
 /**
  * Methods

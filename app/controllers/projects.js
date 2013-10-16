@@ -100,13 +100,16 @@ exports.update = function(req, res){
   var project = req.project
   project = _.extend(project, req.body)
 
+  console.log(req.body)
+
   project.save(function(err) {
     if (!err) {
+      req.flash('success', 'Projeto atualizado com sucesso!')      
       return res.redirect('/projects/' + project._id)
     }
 
     res.render('projects/edit', {
-      title: 'Edit Project',
+      title: project.title,
       project: project,
       errors: err.errors
     })

@@ -7,7 +7,10 @@ block content
   h2 Descrição
   p=financing.description
   h2 Projeto Beneficiado
-  p=financing.project.title
+  - if (financing.project)
+    p=financing.project.title
+  - else
+    p Não há projetos associados a este financiamento!
   h2 Montante
   p=financing.amount
   h2 Contratação

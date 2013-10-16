@@ -1,0 +1,22 @@
+extends ../layouts/default
+
+block main
+  h1 Organizações mapeadas
+
+block content
+  a(href="/organizations/new") Criar nova organização
+  - if (organizations.length)
+    - each organization in organizations
+      .organization
+        h3
+          a(href='/organizations/'+organization._id, title=organization.title) #{organization.title}
+        h3 Perfil
+        p 
+          =organization.profile
+
+    - if (pages > 1)
+      .pagination
+        ul
+          != createPagination(pages, page)
+  - else
+    p Não há organizações mapeadas.
