@@ -41,7 +41,8 @@ FinancingSchema.path('amount').validate(function (amount) {
  */
 
 FinancingSchema.post('save', function (next) {
-  Project.findOne(this.project).exec(function(err,proj){
+
+  mongoose.model('Project').findOne(this.project).exec(function(err,proj){
     proj.updateFinancing(next)
   })
 })

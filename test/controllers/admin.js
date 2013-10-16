@@ -9,7 +9,7 @@ var mongoose = require('mongoose')
   , app = require('../../server')
   , context = describe
   , User = mongoose.model('User')
-  , EconomicActivity = mongoose.model('EconomicActivity')
+  , Activity = mongoose.model('Activity')
   , States = mongoose.model('States')
   , agent = request.agent(app)
   
@@ -49,7 +49,7 @@ describe('Admin controller', function(){
   describe('Data Collections', function(){
     context('collections are empty', function(){
       before(function(done){
-        EconomicActivity.collection.remove(function(){
+        Activity.collection.remove(function(){
           States.collection.remove(done)
         })
       })
@@ -66,7 +66,7 @@ describe('Admin controller', function(){
     })
     
     it('should import economic activities from CSV', function(done){
-      EconomicActivity.loadCSV(function(err){
+      Activity.loadCSV(function(err){
         should.not.exist(err)
         States.loadCSV(function(err){
           should.not.exist(err)
