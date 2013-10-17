@@ -48,6 +48,8 @@ describe('Admin controller', function(){
   
   describe('Data Collections', function(){
     context('collections are empty', function(){
+      
+      
       before(function(done){
         Activity.collection.remove(function(){
           States.collection.remove(done)
@@ -64,6 +66,9 @@ describe('Admin controller', function(){
         .end(done)
       })
     })
+    
+    
+    this.timeout(10000)
     
     it('should import economic activities from CSV', function(done){
       Activity.loadCSV(function(err){
