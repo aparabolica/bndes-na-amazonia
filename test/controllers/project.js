@@ -17,14 +17,16 @@ var mongoose = require('mongoose')
 
 describe('Projects controller', function () {
   before(function (done) {
-    // create a user
-    var user = new User({
-      email: 'foobar@example.com',
-      name: 'Foo bar',
-      username: 'foobar',
-      password: 'foobar'
+    User.collection.remove(function(){
+      // create a user
+      var user = new User({
+        email: 'foobar@example.com',
+        name: 'Foo bar',
+        username: 'foobar',
+        password: 'foobar'
+      })
+      user.save(done)      
     })
-    user.save(done)
   })
 
   describe('GET /projects', function () {
