@@ -4,8 +4,10 @@
 
 var mongoose = require('mongoose')
   , Organization = mongoose.model('Organization')
+  , Project = mongoose.model('Project')
   , Activity = mongoose.model('Activity')
   , utils = require('../../lib/utils')
+  , _ = require('underscore')
 
 /**
  * Load
@@ -50,7 +52,7 @@ exports.index = function(req, res){
  */
 
 exports.new = function(req, res){
-  Activity.find({}, function(err, activities) {
+  Activity.find({level: 'Divisão'}, function(err, activities) {
     if (err) return res.render('500')
     res.render('organizations/new', {
         title: 'Mapear uma nova organização',
@@ -71,13 +73,19 @@ exports.create = function (req, res) {
       req.flash('success', 'Successfully created organization!')
       return res.redirect('/organizations/'+organization._id)
     }
-    Project.list({}, function(projerr, projects) {
-      if (projerr) return res.render('500')    
-      res.render('organizations/new', {
-        title: 'Mapear uma nova organização',
-        organization: organization,
-        projects: projects,
-        errors: utils.errors(err.errors || err)
+    console.log(err)
+    
+    Activity.find({level: 'Divisão'}, function(error, activities) {
+      if (error) return res.render('500')
+      Project.list({}, function(projerr, projects) {
+        if (projerr) return res.render('500')    
+        res.render('organizations/new', {
+          title: 'Mapear uma nova organização',
+          organization: organization,
+          activities: activities,
+          projects: projects,
+          errors: utils.errors(err.errors || projerr || error)
+        })
       })
     })
   })
@@ -88,13 +96,12 @@ exports.create = function (req, res) {
  */
 
 exports.edit = function (req, res) {
-  Project.list({}, function(err, projects) {
-    if (err) return res.render('500')  
-    console.log(req.organization)
+  Activity.find({level: 'Divisão'}, function(err, activities) {
+    if (err) return res.render('500')
     res.render('organizations/edit', {
       title: 'Alterar ' + req.organization.title,
       organization: req.organization,
-      projects: projects
+      activities: activities
     })
   })
 }
@@ -112,10 +119,14 @@ exports.update = function(req, res){
       return res.redirect('/organizations/' + organization._id)
     }
 
-    res.render('organizations/edit', {
-      title: 'Alterar ' + req.organization.title,
-      organization: organization,
-      errors: err.errors
+    Activity.find({level: 'Divisão'}, function(error, activities) {
+      if (error) return res.render('500')
+      res.render('organizations/edit', {
+        title: 'Alterar ' + req.organization.title,
+        activities: activities,
+        organization: organization,
+        errors: err.errors
+      })
     })
   })
 }

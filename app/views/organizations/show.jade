@@ -1,0 +1,19 @@
+extends ../layouts/default
+
+block main
+  h1= organization.title
+
+block content
+  p=organization.profile
+  h2 Atividades
+  p 
+    | Ramo de Atividade: 
+    =organization.activity.description
+  p
+    br
+    form.center.form-inline.confirm(action="/organizations/"+organization._id, method="post")
+      input(type='hidden', name='_csrf', value="#{csrf_token}")
+      a.btn(href='/organizations/'+organization._id+'/edit', title="Editar") Editar
+      &nbsp;&nbsp;
+      input(type="hidden", name="_method", value="DELETE")
+      button.btn.btn-danger(type="submit") Apagar

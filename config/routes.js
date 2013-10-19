@@ -69,9 +69,9 @@ module.exports = function (app, passport) {
   app.get('/organizations/new', auth.requiresLogin, organizations.new)
   app.post('/organizations', auth.requiresLogin, organizations.create)
   app.get('/organizations/:organizationId', organizations.show)
-  // app.get('/organizations/:organizationId/edit', auth.requiresLogin, organizations.edit)
-  // app.put('/organizations/:organizationId', auth.requiresLogin, organizations.update)
-  // app.del('/organizations/:organizationId',  auth.requiresLogin, organizations.destroy)
+  app.get('/organizations/:organizationId/edit', auth.requiresLogin, organizations.edit)
+  app.put('/organizations/:organizationId', auth.requiresLogin, organizations.update)
+  app.del('/organizations/:organizationId',  auth.requiresLogin, organizations.destroy)
   //  
   app.param('organizationId', organizations.load)
     

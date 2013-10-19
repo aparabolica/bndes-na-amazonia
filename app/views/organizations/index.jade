@@ -6,13 +6,17 @@ block main
 block content
   a(href="/organizations/new") Criar nova organização
   - if (organizations.length)
-    - each organization in organizations
-      .organization
-        h3
-          a(href='/organizations/'+organization._id, title=organization.title) #{organization.title}
-        h3 Perfil
-        p 
-          =organization.profile
+    table.table
+      thead
+        tr
+          th Organização
+          th Atividade
+      tbody
+        - each organization in organizations
+          tr
+            td
+              a(href='/organizations/'+organization._id, title=organization.title) #{organization.title}
+            td=organization.activity.description
 
     - if (pages > 1)
       .pagination

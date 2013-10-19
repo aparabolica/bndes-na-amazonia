@@ -29,16 +29,14 @@ block content
             textarea#desc.input-xlarge(type='text', rows="5", name="profile", placeholder='Perfil da organização.')=organization.profile
                 
         .control-group
-          label.control-label(for='activities') Atividades Exercidas
+          label.control-label(for='activity') Atividades Exercidas
           .controls
-            select(class='chosen-select', data-placeholder="Digite para buscar..." name="activities", multiple)
-              option(value="")
+            select(class='chosen-select', data-placeholder="Digite para buscar..." name="activity")
+              - var isSelected = false
               - each activity in activities
-                - var isSelected = false
-                - each selectedActivity in organization.activities
-                  - if (activity == selectedActivity) 
-                    - isSelected = true
-                option(selected=isSelected)= activity.description
+                - if (activity._id.toString()==organization.activity._id.toString())
+                  - isSelected = true
+                option(selected=(isSelected),value=activity._id)= activity.description
 
         .form-actions
           button.btn.btn-primary(type='submit') Salvar

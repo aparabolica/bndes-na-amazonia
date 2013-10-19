@@ -16,7 +16,7 @@ var mongoose = require('mongoose')
 var OrganizationSchema = new Schema({
   title: {type : String, default : '', trim : true},
   profile: {type : String, default : '', trim : true},
-  activities: [{type: Schema.ObjectId, ref: 'Activity'}],
+  activity: {type: Schema.ObjectId, ref: 'Activity'},
   projects: [{
     role: {type:String, enum: ['client', 'financer', 'executor'],
     project: {type : Schema.ObjectId, ref : 'Project'}}
@@ -28,16 +28,12 @@ var OrganizationSchema = new Schema({
  */
 
 OrganizationSchema.path('title').validate(function (title) {
-  return (title.length > 10 && title.length <= 80) 
-}, 'O título do financiamento deve ter entre 10 e 80 caracteres')
+  return (title.length > 5 && title.length <= 80) 
+}, 'O título do organziação deve ter entre 5 e 80 caracteres')
 
 OrganizationSchema.path('profile').validate(function (profile) {
   return (profile.length > 10 && profile.length <= 500) 
 }, 'O perfil da organização deve ter entre 10 e 500 caracteres')
-
-OrganizationSchema.path('activities').validate(function (activities) {
-  return (profile.length > 10 && profile.length <= 500) 
-}, 'Selecione ao menos uma atividade exercida pela organização.')
 
 /**
  * Statics
@@ -47,8 +43,9 @@ OrganizationSchema.statics = {
 
 
   load: function (id, done) {
-    this.findOne({ _id : id })
-      .populate('projects')
+    this
+      .findOne({ _id : id })
+      .populate('activity')
       .exec(done)
   },
 
@@ -56,8 +53,8 @@ OrganizationSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort('title') 
-      .populate('projects')
+      .sort('title')
+      .populate('activity') 
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)
