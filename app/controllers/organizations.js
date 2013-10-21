@@ -52,7 +52,7 @@ exports.index = function(req, res){
  */
 
 exports.new = function(req, res){
-  Activity.find({level: 'Divisão'}, function(err, activities) {
+  Activity.find({level: 'Subclasse'}, function(err, activities) {
     if (err) return res.render('500')
     res.render('organizations/new', {
         title: 'Mapear uma nova organização',
@@ -70,12 +70,12 @@ exports.create = function (req, res) {
   var organization = new Organization(req.body)
   organization.save(function (err) {
     if (!err) {
-      req.flash('success', 'Successfully created organization!')
+      req.flash('success', 'Organização criada com sucesso!')
       return res.redirect('/organizations/'+organization._id)
     }
     console.log(err)
     
-    Activity.find({level: 'Divisão'}, function(error, activities) {
+    Activity.find({level: 'Subclasse'}, function(err, activities) {
       if (error) return res.render('500')
       Project.list({}, function(projerr, projects) {
         if (projerr) return res.render('500')    
@@ -96,10 +96,10 @@ exports.create = function (req, res) {
  */
 
 exports.edit = function (req, res) {
-  Activity.find({level: 'Divisão'}, function(err, activities) {
+  Activity.find({level: 'Subclasse'}, function(err, activities) {
     if (err) return res.render('500')
     res.render('organizations/edit', {
-      title: 'Alterar ' + req.organization.title,
+      title: 'Alterar ' + req.organization.name,
       organization: req.organization,
       activities: activities
     })
@@ -119,7 +119,7 @@ exports.update = function(req, res){
       return res.redirect('/organizations/' + organization._id)
     }
 
-    Activity.find({level: 'Divisão'}, function(error, activities) {
+  Activity.find({level: 'Subclasse'}, function(err, activities) {
       if (error) return res.render('500')
       res.render('organizations/edit', {
         title: 'Alterar ' + req.organization.title,

@@ -18,9 +18,14 @@ block content
           input(type="hidden", name="_method", value="PUT")
 
         .control-group
-          label.control-label(for='title') Título
+          label.control-label(for='name') Nome
           .controls
-            input#title.input-xlarge(type='text', name="title", value=organization.title, placeholder='Até 50 caracteres.')
+            input#title.input-xlarge(type='text', name="name", value=organization.name, placeholder='Nome pelo qual a organização é conhecida.')
+            
+        .control-group
+          label.control-label(for='legalName') Razão social
+          .controls
+            input#title.input-xlarge(type='text', name="legalName", value=organization.legalName, placeholder='Razão social.')
 
 
         .control-group
@@ -29,14 +34,11 @@ block content
             textarea#desc.input-xlarge(type='text', rows="5", name="profile", placeholder='Perfil da organização.')=organization.profile
                 
         .control-group
-          label.control-label(for='activity') Atividades Exercidas
+          label.control-label(for='activities') Atividades exercidas
           .controls
-            select(class='chosen-select', data-placeholder="Digite para buscar..." name="activity")
-              - var isSelected = false
-              - each activity in activities
-                - if (activity._id.toString()==organization.activity._id.toString())
-                  - isSelected = true
-                option(selected=(isSelected),value=activity._id)= activity.description
+              select(class='chosen-select',data-placeholder="Digite para buscar...",name="activities",multiple)
+                - each activity in activities
+                  option(value=activity.description,selected=(organization.activities.indexOf(activity.description)>=0))= activity.description
 
         .form-actions
           button.btn.btn-primary(type='submit') Salvar

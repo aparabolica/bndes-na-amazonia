@@ -4,19 +4,23 @@ block main
   h1 Organizações mapeadas
 
 block content
-  a(href="/organizations/new") Criar nova organização
+  p
+    a(href="/organizations/new") Criar nova organização
   - if (organizations.length)
     table.table
       thead
         tr
           th Organização
-          th Atividade
+          th Atividade Exercidas
       tbody
         - each organization in organizations
           tr
             td
-              a(href='/organizations/'+organization._id, title=organization.title) #{organization.title}
-            td=organization.activity.description
+              a(href='/organizations/'+organization._id, title=organization.name) #{organization.name}
+            td
+              ul
+                each activity in organization.activities
+                  li=activity
 
     - if (pages > 1)
       .pagination

@@ -4,11 +4,16 @@ block main
   h1= organization.title
 
 block content
-  p=organization.profile
-  h2 Atividades
-  p 
-    | Ramo de Atividade: 
-    =organization.activity.description
+  h3 Perfil
+  - if (organization.profile)
+    p=organization.profile
+  - else
+    p Perfil não definido para esta organização!
+  h3 Atividades exercidas
+  ul
+    each activity in organization.activities
+      li=activity
+
   p
     br
     form.center.form-inline.confirm(action="/organizations/"+organization._id, method="post")
@@ -17,3 +22,7 @@ block content
       &nbsp;&nbsp;
       input(type="hidden", name="_method", value="DELETE")
       button.btn.btn-danger(type="submit") Apagar
+  p 
+    a(href='/organizations', title="Lista de Organizações") Ir para a lista de organizações
+  p
+    a(href='/organizations/new', title="Adicionar uma nova organização") Adicionar uma nova organização
