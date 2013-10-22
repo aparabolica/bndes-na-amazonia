@@ -44,7 +44,8 @@ exports.index = function(req, res){
         projects: projects,
         page: page + 1,
         pages: Math.ceil(count / perPage),
-        Quiche: Quiche
+        Quiche: Quiche,
+        Globalize: require('globalize')
       })
     })
   })  
@@ -56,7 +57,7 @@ exports.index = function(req, res){
 
 exports.new = function(req, res){
   res.render('projects/new', {
-    title: 'Novo Projeto',
+    title: 'Mapear um projeto novo',
     project: new Project({})
   })
 }
@@ -69,12 +70,12 @@ exports.create = function (req, res) {
   var project = new Project(req.body)
   project.save(function (err) {
     if (!err) {
-      req.flash('success', 'Successfully created project!')
+      req.flash('success', 'Projeto criado com sucesso!')
       return res.redirect('/projects/'+project._id)
     }
 
     res.render('projects/new', {
-      title: 'New Project',
+      title: 'Mapear um projeto novo',
       project: project,
       errors: utils.errors(err.errors || err)
     })
@@ -87,7 +88,7 @@ exports.create = function (req, res) {
 
 exports.edit = function (req, res) {
   res.render('projects/edit', {
-    title: 'Edit ' + req.project.title,
+    title: 'Editar projeto',
     project: req.project
   })
 }
@@ -123,7 +124,9 @@ exports.update = function(req, res){
 exports.show = function(req, res){
   res.render('projects/show', {
     title: req.project.title,
-    project: req.project
+    project: req.project,
+    Globalize: require('globalize'),
+    Moment: require('moment')
   })
 }
 
@@ -134,7 +137,7 @@ exports.show = function(req, res){
 exports.destroy = function(req, res){
   var project = req.project
   project.remove(function(err){
-    req.flash('info', 'Deleted successfully')
+    req.flash('info', 'Removido com sucesso!')
     res.redirect('/projects')
   })
 }

@@ -37,9 +37,9 @@ ProjectSchema.path('description').validate(function (description) {
   return (description.length > 10 && description.length <= 500) 
 }, 'A descrição do projeto deve ter entre 10 e 500 caracteres')
 
-ProjectSchema.path('states').validate(function (states) {
-  return (states.length > 0) 
-}, 'Selecione ao menos um estado.')
+// ProjectSchema.path('states').validate(function (states) {
+//   return (states.length > 0) 
+// }, 'Selecione ao menos um estado.')
 
 /**
  * Methods
@@ -49,9 +49,9 @@ ProjectSchema.methods = {
 
   updateFinancing: function (done) {
     var self = this
-    
+
     Financing
-      .find({'project': this._id})
+      .find({project: this})
       .exec(function(err,financings){
         self.financings = financings
         self.financingTotal = 0
@@ -61,6 +61,7 @@ ProjectSchema.methods = {
         self.save(done)
       })
   },
+
   
   chartImageUrl: function() {
     var self = this
@@ -94,11 +95,12 @@ ProjectSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort({'createdAt': -1}) // sort by date
+      .sort({'financingTotal': -1}) 
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)
   }
+  
 
 }
 

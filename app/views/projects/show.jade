@@ -5,21 +5,26 @@ block main
 
 block content
   p=project.description
-  h2 Estados afetados
-  ul  
-    - each state in project.states
-      li=state
+
   h2 Financiamentos
-  p 
-    |Total: 
-    =project.financingTotal
-  ul  
-    each financing in project.financings
-      li
-        =financing._id
-        | (
-        =financing.amount
-        |  reais)
+  - if (project.financingTotal)  
+    p Total financiado: #{Globalize.format(project.financingTotal, 'c')}
+    table.table
+      thead
+        tr
+          th Data
+          th Tipo
+          th Valor
+      tbody
+        - each financing in project.financings
+          tr
+            td=Moment(financing.contractDate).format('DD/MM/YYYY')
+            td
+              - if (financing.isDirect)
+                | Direto
+              - else
+                | Indireto
+            td=Globalize.format(financing.amount,'c')
   p
     br
     form.center.form-inline.confirm(action="/projects/"+project._id, method="post")
@@ -27,4 +32,8 @@ block content
       a.btn(href='/projects/'+project._id+'/edit', title="Editar") Editar
       &nbsp;&nbsp;
       input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") Apagar
+      button.btn.btn-danger(type="submit") Apagar      
+  p
+    a(href='/projects/new') Adicionar outro projeto  
+  p
+    a(href='/projects') Ir para lista de projetos
