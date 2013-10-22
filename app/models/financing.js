@@ -13,20 +13,20 @@ var mongoose = require('mongoose')
  */
 
 var FinancingSchema = new Schema({
-  title: {type : String, default : '', trim : true},
-  description: {type : String, default : '', trim : true},
-  project: {type : Schema.ObjectId, ref : 'Project'},
-  amount: Number,
-  contractDate: Date
+  contractDate: {type:Date, required: true},
+  isDirect: {type: Boolean, default: true, required: true},
+  description: {type : String, default : '', required: true, trim : true},
+  project: {type: Schema.ObjectId, ref: 'Project', required: true},
+  amount: {type: Number, required: true}
 })
 
 /**
  * Validations
  */
 
-FinancingSchema.path('title').validate(function (title) {
-  return (title.length > 10 && title.length <= 80) 
-}, 'O título do financiamento deve ter entre 10 e 80 caracteres')
+FinancingSchema.path('isDirect').validate(function (isDirect) {
+  return (typeof(isDirect) == "boolean")
+}, 'Informe se o financiamento é direto ou indireto.')
 
 FinancingSchema.path('description').validate(function (description) {
   return (description.length > 10 && description.length <= 500) 
@@ -41,9 +41,12 @@ FinancingSchema.path('amount').validate(function (amount) {
  */
 
 FinancingSchema.post('save', function (next) {
-
-  mongoose.model('Project').findOne(this.project).exec(function(err,proj){
-    proj.updateFinancing(next)
+  
+  mongoose.model('Project')
+    .findOne(this.project)
+    .exec(function(err,proj){
+      console.log(proj)
+      proj.updateFinancing(next)
   })
 })
 
@@ -64,7 +67,7 @@ FinancingSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort('title') 
+      .sort('amount') 
       .populate('project')
       .limit(options.perPage)
       .skip(options.perPage * options.page)

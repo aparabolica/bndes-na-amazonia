@@ -1,3 +1,5 @@
+
+
 extends ../layouts/default
 
 block main
@@ -7,20 +9,26 @@ block content
   p
     a(href="/financings/new") Novo financiamento
   - if (financings.length)
-    - each financing in financings
-      .financing
-        h3
-          a(href='/financings/'+financing._id, title=financing.title) #{financing.title}
-        - if (financing.project)
-          p 
-            | Projeto: 
-            =financing.project.title        
-        p 
-          | Montante: 
-          =financing.amount
-        p
-          | Descrição: 
-          = financing.description
+    table.table
+      thead
+        tr
+          th Data
+          th Tipo
+          th Projeto
+          th Valor
+      tbody
+        - each financing in financings
+          tr
+            td 
+              a(href='/financings/'+financing._id, title=financing.contractDate) #{Moment(financing.contractDate).format('DD/MM/YYYY')}
+            td 
+              - if (financing.isDirect)
+                | Direto
+              - else
+                | Indireto
+            td
+              a(href='/financings/'+financing._id, title="Projeto")=financing.project.title
+            td=Globalize.format(financing.amount,'c')
 
     - if (pages > 1)
       .pagination

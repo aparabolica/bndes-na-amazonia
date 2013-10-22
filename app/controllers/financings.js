@@ -7,8 +7,10 @@ var mongoose = require('mongoose')
   , Financing = mongoose.model('Financing')
   , Project = mongoose.model('Project')
   , utils = require('../../lib/utils')
-  , _ = require('underscore')  
-
+  , _ = require('underscore')
+  , Moment = require('moment')
+  , Globalize = require('globalize')
+  
 /**
  * Load
  */
@@ -40,7 +42,9 @@ exports.index = function(req, res){
       res.render('financings/index', {
         financings: financings,
         page: page + 1,
-        pages: Math.ceil(count / perPage)
+        pages: Math.ceil(count / perPage),
+        Moment: Moment,
+        Globalize: Globalize
       })
     })
   })  
@@ -68,9 +72,10 @@ exports.new = function(req, res){
 
 exports.create = function (req, res) {
   var financing = new Financing(req.body)
+  console.log(req.body)
   financing.save(function (err) {
     if (!err) {
-      req.flash('success', 'Successfully created financing!')
+      req.flash('success', 'Financiamento criado com sucesso!')
       return res.redirect('/financings/'+financing._id)
     }
     Project.list({}, function(projerr, projects) {
@@ -94,7 +99,7 @@ exports.edit = function (req, res) {
     if (err) return res.render('500')  
     console.log(req.financing)
     res.render('financings/edit', {
-      title: 'Alterar ' + req.financing.title,
+      title: 'Alterar financiamento',
       financing: req.financing,
       projects: projects
     })

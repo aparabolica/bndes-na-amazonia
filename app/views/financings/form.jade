@@ -18,16 +18,6 @@ block content
           input(type="hidden", name="_method", value="PUT")
 
         .control-group
-          label.control-label(for='title') Título
-          .controls
-            input#title.input-xlarge(type='text', name="title", value=financing.title, placeholder='Identificação do financiamento.')
-
-        .control-group
-          label.control-label(for='description') Descrição
-          .controls
-            textarea#desc.input-xlarge(type='text', rows="5", name="description", placeholder='Descrição resumida do financiamento.')=financing.description
-
-        .control-group
           label.control-label(for='project') Projeto
           .controls
             - var project_id
@@ -39,20 +29,38 @@ block content
                 - if (projects)
                     - each project in projects
                       option(value=project._id,selected=(project_id==project._id.toString() ))=project.title
-
-  
+        
         .control-group
-          label.control-label(for='amount') Montante
+          label.control-label(for='amount') Valor financiado
           .controls
             input#amount.input-xlarge(type='text', name="amount", placeholder='Valor do financiamento.', value=financing.amount)
 
         .control-group
-          label.control-label(for='contractDate') Data
+          label.control-label(for='contractDate') Data do Contrato
           .controls
             - var contractDateInputValue = ''
             - if (financing.contractDate)
               - contractDateInputValue =  financing.contractDate.toISOString().slice(0,10)
             input#desc.input-xlarge(type='date', name="contractDate", value=contractDateInputValue)
+
+        .control-group
+          - console.log(financing)
+          label.control-label(for='isDirect') Tipo
+          .controls
+            label.radio
+              input(type="radio",name="isDirect", value="true" checked=(financing.isDirect)) 
+              | Direto
+            label.radio
+              input(type="radio",name="isDirect", value="false", checked=(!financing.isDirect))
+              | Indireto
+
+        .control-group
+          label.control-label(for='description') Descrição
+          .controls
+            textarea#desc.input-xlarge(type='text', rows="5", name="description", placeholder='Descrição resumida do financiamento.')=financing.description
+
+
+  
 
 
         .form-actions
