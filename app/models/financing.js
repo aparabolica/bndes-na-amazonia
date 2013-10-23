@@ -40,14 +40,8 @@ FinancingSchema.path('amount').validate(function (amount) {
  * Post-save hook
  */
 
-FinancingSchema.post('save', function (next) {
-  
-  mongoose.model('Project')
-    .findOne(this.project)
-    .exec(function(err,proj){
-      console.log(proj)
-      proj.updateFinancing(next)
-  })
+FinancingSchema.post('save', function () {
+  mongoose.model('Project').updateRelatedFinancings()
 })
 
 /**

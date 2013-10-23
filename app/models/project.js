@@ -37,37 +37,16 @@ ProjectSchema.path('description').validate(function (description) {
   return (description.length > 10 && description.length <= 500) 
 }, 'A descrição do projeto deve ter entre 10 e 500 caracteres')
 
-// ProjectSchema.path('states').validate(function (states) {
-//   return (states.length > 0) 
-// }, 'Selecione ao menos um estado.')
-
 /**
  * Methods
  */
 
 ProjectSchema.methods = {
-
-  updateFinancing: function (done) {
-    var self = this
-
-    Financing
-      .find({project: this})
-      .exec(function(err,financings){
-        self.financings = financings
-        self.financingTotal = 0
-        _.each(financings,function(financing){
-          self.financingTotal = self.financingTotal + financing.amount
-        })
-        self.save(done)
-      })
-  },
-
   
   chartImageUrl: function() {
     var self = this
       , pie = new Quiche('pie');
     pie.setTransparentBackground()
-    console.log(self.financings)    
     _.each(self.financings, function(financing){
       financing
       pie.addData(financing.amount, financing.title, 'FF0000');      
@@ -99,10 +78,26 @@ ProjectSchema.statics = {
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)
+  },
+  updateRelatedFinancings: function(){
+    // get all projects
+    this.find({}, function(err, projects){
+      if (err) done(err)
+      // for each
+      _.each(projects, function(project) {
+        // update financings related to this project
+        Financing.find({project: project}, function(err, financings){
+          if (err) return false
+          project.financings = financings
+          project.financingTotal = 0
+          _.each(financings, function(financing){
+            project.financingTotal = project.financingTotal + financing.amount
+          })
+          project.save()
+        })
+      })
+    })
   }
-  
-
 }
-
 
 mongoose.model('Project', ProjectSchema)
