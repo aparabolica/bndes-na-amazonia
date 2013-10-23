@@ -61,7 +61,7 @@ FinancingSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort('amount') 
+      .sort({'amount': -1}) 
       .populate('project')
       .limit(options.perPage)
       .skip(options.perPage * options.page)
