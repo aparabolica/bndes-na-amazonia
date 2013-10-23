@@ -4,6 +4,7 @@
  */
 
 var mongoose = require('mongoose')
+  , Organization = mongoose.model('Organization')
   , Financing = mongoose.model('Financing')
   , Project = mongoose.model('Project')
   , utils = require('../../lib/utils')
@@ -32,6 +33,7 @@ exports.index = function(req, res){
   var page = (req.param('page') > 0 ? req.param('page') : 1) - 1
   var perPage = 30
   var options = {
+    sortBy: {'amount': -1},
     perPage: perPage,
     page: page
   }
@@ -56,12 +58,16 @@ exports.index = function(req, res){
  */
 
 exports.new = function(req, res){
-  Project.list({}, function(err, projects) {
-    if (err) return res.render('500')
-    res.render('financings/new', {
-      title: 'Mapear um novo financiamento',
-      financing: new Financing({}),
-      projects: projects
+  Project.list({}, function(prjErr, projects) {
+    if (prjErr) return res.render('500')
+    Organization.list({sortBy: 'name'}, function(orgErr, organizations) {
+      if (orgErr) return res.render('500')
+      res.render('financings/new', {
+        title: 'Mapear um novo financiamento',
+        financing: new Financing({}),
+        projects: projects,
+        organizations: organizations
+      })
     })
   })
 }
@@ -79,11 +85,14 @@ exports.create = function (req, res) {
     }
     Project.list({}, function(projerr, projects) {
       if (projerr) return res.render('500')    
-      res.render('financings/new', {
-        title: 'Mapear um novo financiamento',
-        financing: financing,
-        projects: projects,
-        errors: utils.errors(err.errors || err)
+      Organization.list({sortBy: 'name'}, function(orgErr, organizations) {
+        if (orgErr) return res.render('500')
+        res.render('financings/new', {
+          title: 'Mapear um novo financiamento',
+          financing: financing,
+          projects: projects,
+          errors: utils.errors(err.errors || err)
+        })
       })
     })
   })
@@ -96,10 +105,14 @@ exports.create = function (req, res) {
 exports.edit = function (req, res) {
   Project.list({}, function(err, projects) {
     if (err) return res.render('500')
-    res.render('financings/edit', {
-      title: 'Alterar financiamento',
-      financing: req.financing,
-      projects: projects
+    Organization.list({sortBy: 'name'}, function(orgErr, organizations) {
+      if (orgErr) return res.render('500')
+      res.render('financings/edit', {
+        title: 'Alterar financiamento',
+        financing: req.financing,
+        projects: projects,
+        organizations: organizations
+      })
     })
   })
 }
@@ -132,7 +145,9 @@ exports.update = function(req, res){
 exports.show = function(req, res){
   res.render('financings/show', {
     title: req.financing.title,
-    financing: req.financing
+    financing: req.financing,
+    Moment: require('moment'),
+    Globalize: require('globalize')
   })
 }
 

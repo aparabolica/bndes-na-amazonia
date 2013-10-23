@@ -12,6 +12,7 @@ block content
         tr
           th Organização
           th Atividade Exercidas
+          th Financiamento Recebido
       tbody
         - each organization in organizations
           tr
@@ -21,6 +22,7 @@ block content
               ul
                 each activity in organization.activities
                   li=activity
+            td=Globalize.format(organization.totalFinanced,'c')
 
     - if (pages > 1)
       .pagination

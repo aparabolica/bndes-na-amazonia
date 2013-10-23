@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
   , config = require('../../config/config')[env]
   , Schema = mongoose.Schema
   , Activity = mongoose.model('Activity')
+  , Financing = mongoose.model('Financing')
   , _ = require('underscore') 
 
 /**
@@ -18,10 +19,8 @@ var OrganizationSchema = new Schema({
   legalName: {type : String, default : '', trim : true},
   profile: {type : String, default : '', trim : true},
   activities: [String],
-  projects: [{
-    role: {type:String, enum: ['client', 'financer', 'executor'],
-    project: {type : Schema.ObjectId, ref : 'Project'}}
-  }]
+  financings: [{type : Schema.ObjectId, ref : 'Financings'}],
+  totalFinanced: {type: Number, default: 0}
 })
 
 /**
@@ -49,10 +48,32 @@ OrganizationSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort('name')
+      .sort(options.sortBy || {name: -1})
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)
+  },
+  updateRelatedFinancings: function(){
+    // get all organizations
+    this.find({}, function(err, organizations){
+      if (err) done(err)
+      // for each
+      _.each(organizations, function(organization) {
+        // update financings related to this organizations
+        Financing.find({beneficiary: organization}, function(err, financings){
+          if (err) return false
+          // console.log(financings)          
+          organization.financings = financings
+          organization.totalFinanced = 0
+          _.each(financings, function(financing){
+            // console.log(organization)
+            organization.totalFinanced = organization.totalFinanced + financing.amount
+          })
+          // console.log(organization)
+          organization.save()
+        })
+      })
+    })
   }
 
 }

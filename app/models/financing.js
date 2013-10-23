@@ -17,6 +17,7 @@ var FinancingSchema = new Schema({
   isDirect: {type: Boolean, default: true, required: true},
   description: {type : String, default : '', required: true, trim : true},
   project: {type: Schema.ObjectId, ref: 'Project', required: true},
+  beneficiary: {type: Schema.ObjectId, ref: 'Organization'},  
   amount: {type: Number, required: true}
 })
 
@@ -42,6 +43,7 @@ FinancingSchema.path('amount').validate(function (amount) {
 
 FinancingSchema.post('save', function () {
   mongoose.model('Project').updateRelatedFinancings()
+  mongoose.model('Organization').updateRelatedFinancings()  
 })
 
 /**
@@ -54,15 +56,16 @@ FinancingSchema.statics = {
   load: function (id, done) {
     this.findOne({ _id : id })
       .populate('project', 'title')
+      .populate('beneficiary')
       .exec(done)
   },
 
   list: function (options, cb) {
     var criteria = options.criteria || {}
-
     this.find(criteria)
-      .sort({'amount': -1}) 
+      .sort(options.sortBy || 'name') 
       .populate('project')
+      .populate('beneficiary')
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)

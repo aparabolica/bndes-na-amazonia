@@ -18,6 +18,16 @@ block content
           input(type="hidden", name="_method", value="PUT")
 
         .control-group
+          label.control-label(for='beneficiary') Beneficiário
+          .controls
+            - console.log(financing)
+            - if (financing.beneficiary)
+              - var beneficiaryId = financing.beneficiary._id.toString()
+            select(class='chosen-select', data-placeholder="Escolha o benefiário do financiamento..." name="beneficiary")
+              - each organization in organizations
+                option(value=organization._id,selected=(organization._id==beneficiaryId))=organization.name
+
+        .control-group
           label.control-label(for='project') Projeto
           .controls
             - var project_id

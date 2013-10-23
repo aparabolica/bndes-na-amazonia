@@ -4,18 +4,33 @@ block main
   h1= financing.title
 
 block content
-  h2 Descrição
-  p=financing.description
-  h2 Projeto Beneficiado
-  - if (financing.project)
-    p=financing.project.title
-  - else
-    p Não há projetos associados a este financiamento!
-  h2 Montante
-  p=financing.amount
-  h2 Contratação
-  p= financing.contractDate
-  
+  h2 Ficha do Financiamento
+  p 
+    | Data:
+    =Moment(financing.contractDate).utc().format('DD/MM/YYYY')
+  p 
+    | Valor: #{Globalize.format(financing.amount,'c')}
+  p 
+    | Tipo: 
+    - if (isDirect)
+      | Direto
+    - else 
+      | Indireto
+  p
+    | Descrição: 
+    =financing.description
+  p
+    | Projeto:     
+    - if (financing.project)
+      a(href='/projects/'+financing.project._id)=financing.project.title
+    - else
+      | Não há projetos associados a este financiamento!
+  p 
+    | Beneficiário: 
+    - if (financing.beneficiary)
+      a(href='/organizations/'+financing.beneficiary._id)=financing.beneficiary.name
+    - else
+      | Não um beneficiário associado a este financiamento!  
   p
     br
     form.center.form-inline.confirm(action="/financings/"+financing._id, method="post")

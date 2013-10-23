@@ -1,15 +1,14 @@
 extends ../layouts/default
 
 block main
-  h1= organization.title
+  h1= organization.name
 
 block content
-  h3 Perfil
   - if (organization.profile)
     p=organization.profile
   - else
     p Perfil não definido para esta organização!
-  h3 Atividades exercidas
+  p Exerce atividades de:
   ul
     each activity in organization.activities
       li=activity
