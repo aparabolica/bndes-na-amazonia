@@ -20,7 +20,7 @@ block content
         - each financing in financings
           tr
             td 
-              a(href='/financings/'+financing._id, title=financing.contractDate) #{Moment(financing.contractDate).format('DD/MM/YYYY')}
+              a(href='/financings/'+financing._id, title=financing.contractDate) #{Moment(financing.contractDate).utc().format('DD/MM/YYYY')}
             td 
               - if (financing.isDirect)
                 | Direto
