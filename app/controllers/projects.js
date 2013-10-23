@@ -101,8 +101,6 @@ exports.update = function(req, res){
   var project = req.project
   project = _.extend(project, req.body)
 
-  console.log(req.body)
-
   project.save(function(err) {
     if (!err) {
       req.flash('success', 'Projeto atualizado com sucesso!')      

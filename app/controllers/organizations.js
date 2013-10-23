@@ -73,8 +73,7 @@ exports.create = function (req, res) {
       req.flash('success', 'Organização criada com sucesso!')
       return res.redirect('/organizations/'+organization._id)
     }
-    console.log(err)
-    
+        
     Activity.find({level: 'Subclasse'}, function(err, activities) {
       if (error) return res.render('500')
       Project.list({}, function(projerr, projects) {

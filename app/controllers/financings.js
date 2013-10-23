@@ -72,7 +72,6 @@ exports.new = function(req, res){
 
 exports.create = function (req, res) {
   var financing = new Financing(req.body)
-  console.log(req.body)
   financing.save(function (err) {
     if (!err) {
       req.flash('success', 'Financiamento criado com sucesso!')
@@ -96,8 +95,7 @@ exports.create = function (req, res) {
 
 exports.edit = function (req, res) {
   Project.list({}, function(err, projects) {
-    if (err) return res.render('500')  
-    console.log(req.financing)
+    if (err) return res.render('500')
     res.render('financings/edit', {
       title: 'Alterar financiamento',
       financing: req.financing,
