@@ -20,14 +20,7 @@ exports.index = function(req, res){
     page: page
   }
 
-  Project.list(options, function(err, projects) {
-    if (err) return res.render('500')
-    Project.count().exec(function (err, count) {
-      res.render('home/index', {
-        projects: projects,
-        page: page + 1,
-        pages: Math.ceil(count / perPage)
-      })
-    })
-  })  
+  res.render('home/index', {
+    Project: mongoose.model('Project')
+  })
 }

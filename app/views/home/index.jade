@@ -1,29 +1,54 @@
 extends ../layouts/default
 
+block head
+  | será??
+
 block main
-  h1 Projetos na Amazônia
+  h1 O dinheiro público na Amazônia
 
 block content
-  - if (projects.length)
-    - each project in projects
-      .project
-        h3
-          a(href='/projects/'+project._id, title=project.title) #{project.title}
-        p=project.description
-    - if (pages > 1)
-      .pagination
-        ul
-          != createPagination(pages, page)
-  - else
-    p.muted Sem projetos cadastrados.&nbsp;
-      a(href="/projects/new") Criar um
+  p
+    | O Banco Nacional de Desenvolvimento Econômico e Social (BNDES) é o maior financiador de grandes projetos na Amazônia. O banco é responsável por financiar barragens, linhas de transmissão, termelétricas e outros de projetos de grande impacto ambiental.
+  p 
+    | A Agência Pública, em parceira com ((O Eco)), produziu uma série de reportagens sobre o tema, que podem ser lidas aqui. 
+  p 
+    | Continuar texto
+  
+
+  h2 Os projetos que receberam mais financiamentos
+  
+  div#chart_div
+  
+  h2 Os maiores financiamentos
+  
+  h2 As organizações que mais receberam financiamentos
+
+append javascript
+  script(src='https://www.google.com/jsapi')
+  script.
+    // Load the Visualization API and the piechart package.
+    google.load("visualization", "1", {packages:["corechart"]});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+    
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Projeto', 'Total em Financiamentos'],
+        ['Belo Monte',  25387812308],
+        ['Jirau',  9545000000],
+        ['Santo Antonio',  6135172400],
+        ['Estrada de Ferro Carajás',  3882956000]
+      ]);      
       
-  style
-    .node {
-      border: solid 1px white;
-      font: 10px sans-serif;
-      line-height: 12px;
-      overflow: hidden;
-      position: absolute;
-      text-indent: 2px;
+      var options = {
+        vAxis: {title: 'Projetos',  titleTextStyle: {color: 'red'}}
+      };
+
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
     }
+    

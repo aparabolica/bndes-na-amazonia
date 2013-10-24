@@ -76,7 +76,7 @@ module.exports = function (app, passport) {
   app.param('organizationId', organizations.load)
     
   // home route
-  app.get('/', projects.index)
+  app.get('/', home.index)
 
   // admin routes
   app.get('/admin', admin.index)
