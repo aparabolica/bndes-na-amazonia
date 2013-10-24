@@ -97,6 +97,19 @@ ProjectSchema.statics = {
         })
       })
     })
+  },
+  asArrayDataTable: function() {
+    // get all projects
+    this.find({}, function(err, projects){
+      if (err) done(err)
+      var arrayDataTable = []
+      // for each
+      _.each(projects, function(project) {
+        arrayDataTable << [project.name, project.financingTotal]
+      })
+      return arrayDataTable
+    })
+    
   }
 }
 
