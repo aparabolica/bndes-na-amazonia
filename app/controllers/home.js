@@ -13,14 +13,17 @@ var mongoose = require('mongoose')
  */
 
 exports.index = function(req, res){
-  var page = (req.param('page') > 0 ? req.param('page') : 1) - 1
-  var perPage = 30
   var options = {
-    perPage: perPage,
-    page: page
+    perPage: 20,
+    page: 0
   }
-
-  res.render('home/index', {
-    Project: mongoose.model('Project')
+  
+  Project.list(options, function(err, projects) {
+    if (err) return res.render('500')
+    res.render('home/index', {
+       projects: projects,
+       _ : require('underscore')
+    })    
   })
+
 }

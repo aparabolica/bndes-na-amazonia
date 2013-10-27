@@ -98,18 +98,17 @@ ProjectSchema.statics = {
       })
     })
   },
-  asArrayDataTable: function() {
+  asArrayDataTable: function(done) {
+    var arrayDataTable = []
     // get all projects
     this.find({}, function(err, projects){
       if (err) done(err)
-      var arrayDataTable = []
       // for each
       _.each(projects, function(project) {
-        arrayDataTable << [project.name, project.financingTotal]
+        arrayDataTable.push([project.title, project.financingTotal])
       })
-      return arrayDataTable
+      done(arrayDataTable)
     })
-    
   }
 }
 

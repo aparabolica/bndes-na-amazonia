@@ -13,18 +13,21 @@ block content
     | A Agência Pública, em parceira com ((O Eco)), produziu uma série de reportagens sobre o tema, que podem ser lidas aqui. 
   p 
     | Continuar texto
-  
 
   h2 Os projetos que receberam mais financiamentos
   
-  div#chart_div
+  div#projects_div
   
-  h2 Os maiores financiamentos
-  
-  h2 As organizações que mais receberam financiamentos
 
 append javascript
   script(src='https://www.google.com/jsapi')
+  - var projectsArray = []
+  - _.each(projects,function(project,index){
+  -   projectsArray.push('[\"'+(index+1)+'o.\",'+project.financingTotal+']')
+  - })
+  - console.log('['+projectsArray.join(', ')+']')
+  script
+    var projectsDataArray = !{'['+projectsArray.join(', ')+']'}
   script.
     // Load the Visualization API and the piechart package.
     google.load("visualization", "1", {packages:["corechart"]});
@@ -32,23 +35,18 @@ append javascript
     // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
     
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
+    data.addColumn('string', 'Posição');
+    data.addColumn('number', 'Total em Financiamentos');
+
+        
     function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Projeto', 'Total em Financiamentos'],
-        ['Belo Monte',  25387812308],
-        ['Jirau',  9545000000],
-        ['Santo Antonio',  6135172400],
-        ['Estrada de Ferro Carajás',  3882956000]
-      ]);      
+      var data = google.visualization.arrayToDataTable(projectsDataArray);      
       
       var options = {
-        vAxis: {title: 'Projetos',  titleTextStyle: {color: 'red'}}
+        height: 500
       };
 
-      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.BarChart(document.getElementById('projects_div'));
       chart.draw(data, options);
     }
     
