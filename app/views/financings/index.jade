@@ -6,35 +6,42 @@ block main
   h1 Financiamentos
 
 block content
-  p
-    a(href="/financings/new") Novo financiamento
   - if (financings.length)
     table.table
       thead
         tr
-          th Beneficiário        
-          th Data
-          th Tipo
-          th Projeto
-          th Valor
+          th
+            .text-center Ano
+          th 
+            .text-center Projeto
+          th 
+            .text-center Beneficiário        
+          th 
+            .text-center Tipo
+          th 
+            .text-center Valor
+          th
       tbody
         - each financing in financings
           tr
+            td #{Moment(financing.contractDate).utc().format('YYYY')}
+            td
+              a(href='/financings/'+financing._id, title="Abrir projeto")=financing.project.title            
             td
               - if (financing.beneficiary)
-                a(href='/organizations/'+financing.beneficiary._id) #{financing.beneficiary.name}
+                a(href='/organizations/'+financing.beneficiary._id, title="Abrir beneficiário") #{financing.beneficiary.name}
               - else
                 | -
-            td 
-              a(href='/financings/'+financing._id, title=financing.contractDate) #{Moment(financing.contractDate).utc().format('DD/MM/YYYY')}
             td 
               - if (financing.isDirect)
                 | Direto
               - else
                 | Indireto
-            td
-              a(href='/financings/'+financing._id, title="Projeto")=financing.project.title
+
             td=Globalize.format(financing.amount,'c')
+            td 
+              a(href='/financings/'+financing._id, title="Abrir financiamento") Exibir
+              
 
     - if (pages > 1)
       .pagination
