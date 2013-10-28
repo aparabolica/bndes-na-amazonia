@@ -17,36 +17,55 @@ block content
   h2 Os projetos que receberam mais financiamentos
   
   div#projects_div
+  div#tooltip
+    span#tooltipTopLine
+    span#tooltipBottomLine
   
 
 append javascript
   script(src='https://www.google.com/jsapi')
-  - var projectsArray = []
+  - var projectsArray = [ '[\"Projeto\", \"Parent\", \"Total Financiado\"]', '[\"projetos\", null, 0]' ]
   - _.each(projects,function(project,index){
-  -   projectsArray.push('[\"'+(index+1)+'o.\",'+project.financingTotal+']')
+  -   projectsArray.push('[\"'+(project.title)+'\",\"projetos\",'+project.financingTotal+']')
   - })
   - console.log('['+projectsArray.join(', ')+']')
-  script
-    var projectsDataArray = !{'['+projectsArray.join(', ')+']'}
   script.
-    // Load the Visualization API and the piechart package.
-    google.load("visualization", "1", {packages:["corechart"]});
+
+    var projectsDataArray = !{'['+projectsArray.join(', ')+']'}
+
+    google.load("visualization", "1", {packages:["treemap"]});
 
     // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(drawChart);
-    
-    data.addColumn('string', 'Posição');
-    data.addColumn('number', 'Total em Financiamentos');
-
+    google.setOnLoadCallback(drawChart);    
         
     function drawChart() {
       var data = google.visualization.arrayToDataTable(projectsDataArray);      
       
-      var options = {
-        height: 500
-      };
+      // Create the visualization.
+      var tree = new google.visualization.TreeMap(document.getElementById('projects_div'));
 
-      var chart = new google.visualization.BarChart(document.getElementById('projects_div'));
-      chart.draw(data, options);
+      google.visualization.events.addListener(tree, 'onmouseover', function (e) {
+             var provider = data.getValue(e.row, 1);
+             var totalService = data.getValue(e.row, 2);
+             // populate the tooltip with data
+             $('#tooltipTopLine').html(provider);
+             $('#tooltipBottomLine').html(totalService);
+             // show the tooltip
+             $('#tooltip').show();
+      });
+      
+      google.visualization.events.addListener(tree, 'onmouseout', function (e) {
+         // hide the tooltip
+         $('#tooltip').hide();
+      });
+      
+      tree.draw(data, {
+        minColor: '#f00',
+        midColor: '#ddd',
+        maxColor: '#0d0',
+        headerHeight: 0,
+        fontColor: 'black',
+        showTooltips: false
+      });
     }
     
