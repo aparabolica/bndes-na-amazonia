@@ -1,15 +1,14 @@
 extends ../layouts/default
 
 block main
-  h1 Projetos mapeados
+  h1 Projetos
 
 block content
-  a(href="/projects/new") Adicionar um projeto
   - if (projects.length)
     table.table
       thead
         tr
-          th Projeto
+          th Nome
           th Financiamentos Mapeados
       tbody
       - each project in projects

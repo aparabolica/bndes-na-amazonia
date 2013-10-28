@@ -7,33 +7,39 @@ block content
   p=project.description
 
   h2 Financiamentos
-  - if (project.financingTotal)  
-    p Total financiado: #{Globalize.format(project.financingTotal, 'c')}
-    table.table
-      thead
+  table.table
+    thead
+      tr
+        th
+          .text-center Data
+        th 
+          .text-center Tipo
+        th 
+          .text-center Valor
+    tbody
+      - each financing in project.financings
         tr
-          th Data
-          th Tipo
-          th Valor
-      tbody
-        - each financing in project.financings
-          tr
-            td=Moment(financing.contractDate).format('DD/MM/YYYY')
-            td
+          td
+            .text-center
+              a(href='/financings/'+financing._id, title="Abrir financiamento")=Moment(financing.contractDate).format('DD/MM/YYYY')
+          td
+            .text-center
               - if (financing.isDirect)
                 | Direto
               - else
                 | Indireto
-            td=Globalize.format(financing.amount,'c')
-  p
-    br
-    form.center.form-inline.confirm(action="/projects/"+project._id, method="post")
-      input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/projects/'+project._id+'/edit', title="Editar") Editar
-      &nbsp;&nbsp;
-      input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") Apagar      
-  p
-    a(href='/projects/new') Adicionar outro projeto  
-  p
-    a(href='/projects') Ir para lista de projetos
+          td
+            .text-center=Globalize.format(financing.amount,'c')
+    tfoot
+      tr
+        td 
+        td 
+          .text-center
+            b Total
+        td 
+          .text-center
+            b
+              =Globalize.format(project.financingTotal,'c')
+
+  p 
+    <a href="javascript:history.back()">Voltar</a>
