@@ -15,7 +15,9 @@ block content
         tr
           td
             a(href='/projects/'+project._id, title=project.title) #{project.title}
-          td=Globalize.format(project.financingTotal,'c')
+          td
+            =accounting.formatMoney(project.financingTotal, "R$", 2, ".", ",")
+
     - if (pages > 1)
       .pagination
         ul

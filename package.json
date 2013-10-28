@@ -40,6 +40,7 @@
     "passport-linkedin": "latest",
     "imager": "latest",
     "moment": "latest",
+    "accounting": "latest",
     "globalize": "latest",
     "quiche": "latest",
     "notifier": "latest",

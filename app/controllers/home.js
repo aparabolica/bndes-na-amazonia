@@ -22,7 +22,8 @@ exports.index = function(req, res){
     if (err) return res.render('500')
     res.render('home/index', {
        projects: projects,
-       _ : require('underscore')
+       _ : require('underscore'),
+       accounting: require('accounting') 
     })    
   })
 

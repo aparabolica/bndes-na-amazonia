@@ -28,7 +28,7 @@ block content
     | Data:
     =Moment(financing.contractDate).utc().format('DD/MM/YYYY')
   p 
-    | Valor: #{Globalize.format(financing.amount,'c')}
+    | Valor: #{accounting.formatMoney(financing.amount, "R$", 2, ".", ",")}
   p 
     | Tipo: 
     - if (isDirect)

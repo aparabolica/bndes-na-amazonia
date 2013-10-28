@@ -43,7 +43,8 @@ exports.index = function(req, res){
         page: page + 1,
         pages: Math.ceil(count / perPage),
         Globalize: require('globalize'),
-        Moment: require('moment')
+        Moment: require('moment'),
+        accounting: require('accounting')
       })
     })
   })  
@@ -142,7 +143,8 @@ exports.show = function(req, res){
     title: req.organization.title,
     organization: req.organization,
     Moment: require('moment'),
-    Globalize: require('globalize')
+    Globalize: require('globalize'),
+    accounting: require('accounting')
   })
 }
 

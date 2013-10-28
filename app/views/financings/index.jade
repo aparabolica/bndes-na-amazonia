@@ -42,7 +42,8 @@ block content
 
             td  
               .text-center
-                =Globalize.format(financing.amount,'c')
+                =accounting.formatMoney(financing.amount, "R$", 2, ".", ",")
+
             td 
               a(href='/financings/'+financing._id, title="Abrir financiamento") Exibir
               
