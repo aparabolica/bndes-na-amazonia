@@ -19,7 +19,7 @@ var OrganizationSchema = new Schema({
   legalName: {type : String, default : '', trim : true},
   profile: {type : String, default : '', trim : true},
   activities: [String],
-  financings: [{type : Schema.ObjectId, ref : 'Financings'}],
+  financings: [{type : Schema.ObjectId, ref : 'Financing'}],
   totalFinanced: {type: Number, default: 0}
 })
 
@@ -41,6 +41,7 @@ OrganizationSchema.statics = {
   load: function (id, done) {
     this
       .findOne({ _id : id })
+      .populate({path: 'financings', options: { sort: { 'contractDate': 1 } } })
       .exec(done)
   },
 
@@ -48,7 +49,7 @@ OrganizationSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort(options.sortBy || {name: -1})
+      .sort(options.sortBy || {'name': 1})
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)

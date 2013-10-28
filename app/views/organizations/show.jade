@@ -6,22 +6,41 @@ block main
 block content
   - if (organization.profile)
     p=organization.profile
-  - else
-    p Perfil não definido para esta organização!
-  p Exerce atividades de:
-  ul
-    each activity in organization.activities
-      li=activity
+  h2 Financiamentos
 
-  p
-    br
-    form.center.form-inline.confirm(action="/organizations/"+organization._id, method="post")
-      input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/organizations/'+organization._id+'/edit', title="Editar") Editar
-      &nbsp;&nbsp;
-      input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") Apagar
+  table.table
+    thead
+      tr
+        th 
+          .text-center Data
+        th 
+          .text-center Tipo
+        th 
+          .text-center Valor
+    tbody
+      - each financing in organization.financings
+        tr
+          td
+            .text-center
+              a(href='/financings/'+financing._id, title="Abrir financiamento")=Moment(financing.contractDate).format('DD/MM/YYYY')
+          td
+            .text-center 
+              - if (financing.isDirect)
+                | Direto
+              - else
+                | Indireto
+          td
+            .text-center=Globalize.format(financing.amount,'c')
+    tfoot
+      tr
+        td 
+        td 
+          .text-center
+            b Total
+        td 
+          .text-center
+            b
+              =Globalize.format(organization.totalFinanced,'c')
+
   p 
-    a(href='/organizations', title="Lista de Organizações") Ir para a lista de organizações
-  p
-    a(href='/organizations/new', title="Adicionar uma nova organização") Adicionar uma nova organização
+    <a href="javascript:history.back()">Voltar</a>
