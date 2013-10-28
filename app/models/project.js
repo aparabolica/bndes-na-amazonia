@@ -30,8 +30,8 @@ var ProjectSchema = new Schema({
  */
 
 ProjectSchema.path('title').validate(function (title) {
-  return (title.length > 5 && title.length <= 80) 
-}, 'O título do projeto deve ter entre 5 e 80 caracteres')
+  return (title.length > 5 && title.length <= 200) 
+}, 'O título do projeto deve ter entre 5 e 200 caracteres')
 
 ProjectSchema.path('description').validate(function (description) {
   return (description.length > 10 && description.length <= 500) 
