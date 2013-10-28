@@ -66,7 +66,7 @@ ProjectSchema.statics = {
   load: function (id, done) {
     this
       .findOne({ _id : id })
-      .populate('financings')
+      .populate({path: 'financings', options: { sort: { 'contractDate': 1 } } })
       .exec(done)
   },
 
