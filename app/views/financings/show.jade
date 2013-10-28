@@ -4,7 +4,26 @@ block main
   h1= financing.title
 
 block content
-  h2 Ficha do Financiamento
+  h2 Ficha do financiamento
+  p 
+    | Beneficiário: 
+    - if (financing.beneficiary)
+      a(href='/organizations/'+financing.beneficiary._id)=financing.beneficiary.name
+    - else
+      | Não um beneficiário associado a este financiamento!  
+  p
+    | Projeto:     
+    - if (financing.project)
+      a(href='/projects/'+financing.project._id)=financing.project.title
+    - else
+      | Não há projetos associados a este financiamento!
+  p
+    | Descrição: 
+    - if (financing.description)
+      =financing.description
+    - else
+      | Não há descrição para este projeto
+      
   p 
     | Data:
     =Moment(financing.contractDate).utc().format('DD/MM/YYYY')
@@ -17,29 +36,4 @@ block content
     - else 
       | Indireto
   p
-    | Descrição: 
-    =financing.description
-  p
-    | Projeto:     
-    - if (financing.project)
-      a(href='/projects/'+financing.project._id)=financing.project.title
-    - else
-      | Não há projetos associados a este financiamento!
-  p 
-    | Beneficiário: 
-    - if (financing.beneficiary)
-      a(href='/organizations/'+financing.beneficiary._id)=financing.beneficiary.name
-    - else
-      | Não um beneficiário associado a este financiamento!  
-  p
-    br
-    form.center.form-inline.confirm(action="/financings/"+financing._id, method="post")
-      input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/financings/'+financing._id+'/edit', title="edit") Editar
-      &nbsp;&nbsp;
-      input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") Apagar
-  p
-    a(href='/financings/new') Adicionar outro financiamento 
-  p
-    a(href='/financings') Ir para lista de financiamentos
+    <a href="javascript:history.back()">Voltar</a>

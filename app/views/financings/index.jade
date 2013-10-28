@@ -17,7 +17,7 @@ block content
           th 
             .text-center Beneficiário        
           th 
-            .text-center Tipo
+            .text-center Direto?
           th 
             .text-center Valor
           th
@@ -26,19 +26,23 @@ block content
           tr
             td #{Moment(financing.contractDate).utc().format('YYYY')}
             td
-              a(href='/financings/'+financing._id, title="Abrir projeto")=financing.project.title            
+              a(href='/projects/'+financing.project._id, title="Abrir projeto")=financing.project.title            
             td
-              - if (financing.beneficiary)
-                a(href='/organizations/'+financing.beneficiary._id, title="Abrir beneficiário") #{financing.beneficiary.name}
-              - else
-                | -
+              .text-center
+                - if (financing.beneficiary)
+                  a(href='/organizations/'+financing.beneficiary._id, title="Abrir beneficiário") #{financing.beneficiary.name}
+                - else
+                  | -
             td 
-              - if (financing.isDirect)
-                | Direto
-              - else
-                | Indireto
+              .text-center
+                - if (financing.isDirect)
+                  | Sim
+                - else
+                  | Não
 
-            td=Globalize.format(financing.amount,'c')
+            td  
+              .text-center
+                =Globalize.format(financing.amount,'c')
             td 
               a(href='/financings/'+financing._id, title="Abrir financiamento") Exibir
               
