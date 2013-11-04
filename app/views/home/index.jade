@@ -13,59 +13,15 @@ block content
     | A Agência Pública, em parceira com ((O Eco)), produziu uma série de reportagens sobre o tema, que podem ser lidas aqui. 
   p 
     | Continuar texto
-
-  h2 Os projetos que receberam mais financiamentos
   
-  div#projects_div
-  div#tooltip
-    span#tooltipTopLine
-    span#tooltipBottomLine
-  
-
-append javascript
-  script(src='https://www.google.com/jsapi')
-  - var projectsArray = [ '[\"Projeto\", \"Parent\", \"Total Financiado\"]', '[\"projetos\", null, 0]' ]
-  - _.each(projects,function(project,index){
-  -   projectsArray.push('[\"'+(project.title)+'\",\"projetos\",'+project.financingTotal+']')
-  - })
-  - console.log('['+projectsArray.join(', ')+']')
-  script.
-
-    var projectsDataArray = !{'['+projectsArray.join(', ')+']'}
-
-    google.load("visualization", "1", {packages:["treemap"]});
-
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(drawChart);    
-        
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable(projectsDataArray);      
-      
-      // Create the visualization.
-      var tree = new google.visualization.TreeMap(document.getElementById('projects_div'));
-
-      google.visualization.events.addListener(tree, 'onmouseover', function (e) {
-             var provider = data.getValue(e.row, 1);
-             var totalService = data.getValue(e.row, 2);
-             // populate the tooltip with data
-             $('#tooltipTopLine').html(provider);
-             $('#tooltipBottomLine').html(totalService);
-             // show the tooltip
-             $('#tooltip').show();
-      });
-      
-      google.visualization.events.addListener(tree, 'onmouseout', function (e) {
-         // hide the tooltip
-         $('#tooltip').hide();
-      });
-      
-      tree.draw(data, {
-        minColor: '#f00',
-        midColor: '#ddd',
-        maxColor: '#0d0',
-        headerHeight: 0,
-        fontColor: 'black',
-        showTooltips: false
-      });
-    }
+  h2.text-center Os maiores projetos
     
+    <iframe style="border: none;" src="//e.infogr.am/Desembolsos-em-infraestrutura-na-Amaznia-2008-2012" height="787" width="600" frameborder="0" scrolling="no"></iframe>
+
+  h2.text-center Desembolsos do BNDES em infraestrutura
+
+    <iframe style="border: none;" src="//e.infogr.am/Desembolsos-do-BNDES-em-infraestrutura" height="561" width="550" frameborder="0" scrolling="no"></iframe>
+
+  h2.text-center Desembolos do BNDES em infraestrutura, por setor
+
+    <iframe style="border: none;" src="//e.infogr.am/Desembolsos-do-BNDES-no-setor-de-infraestrutura" height="671" width="600" frameborder="0" scrolling="no"></iframe>
