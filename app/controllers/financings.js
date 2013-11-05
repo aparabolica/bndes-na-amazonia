@@ -167,7 +167,7 @@ exports.destroy = function(req, res){
 }
 
 /**
- * CSV Download
+ * Download CSV feature
  */
 
 exports.downloadCSV = function(req, res){
