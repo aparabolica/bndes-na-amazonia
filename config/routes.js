@@ -51,6 +51,7 @@ module.exports = function (app, passport) {
   app.get('/projects/:projectId/edit', projectAuth, projects.edit)
   app.put('/projects/:projectId', projectAuth, projects.update)
   app.del('/projects/:projectId', projectAuth, projects.destroy)
+  app.get('/data/projects.csv', projects.downloadCSV)
  
   app.param('projectId', projects.load)
 

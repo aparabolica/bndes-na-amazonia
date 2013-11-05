@@ -8,6 +8,7 @@ var mongoose = require('mongoose')
   , Quiche = require('quiche')  
   , utils = require('../../lib/utils')
   , _ = require('underscore')
+  , csv = require('csv')
 
 /**
  * Load
@@ -139,5 +140,27 @@ exports.destroy = function(req, res){
   project.remove(function(err){
     req.flash('info', 'Removido com sucesso!')
     res.redirect('/projects')
+  })
+}
+
+/**
+ * Download CSV feature
+ */
+
+exports.downloadCSV = function(req, res){
+  Project.find({})
+  .sort('title') 
+  .exec(function(err,projects){
+    var data = [['title','description','totalFinanced']]
+    _.each(projects, function(project){
+      data.push([ 
+        project.title,
+        project.description,
+        project.financingTotal        
+      ])
+    })
+    csv()
+    .from(data, {columns: true, escape: '"'})
+    .to(res)
   })
 }
