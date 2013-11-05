@@ -1,27 +1,25 @@
 extends ../layouts/default
 
 block head
-  | será??
 
 block main
-  h1 O dinheiro público na Amazônia
+  h1.text-center O dinheiro público na Amazônia
 
 block content
-  p
-    | O Banco Nacional de Desenvolvimento Econômico e Social (BNDES) é o maior financiador de grandes projetos na Amazônia. O banco é responsável por financiar barragens, linhas de transmissão, termelétricas e outros de projetos de grande impacto ambiental.
-  p 
-    | A Agência Pública, em parceira com ((O Eco)), produziu uma série de reportagens sobre o tema, que podem ser lidas aqui. 
-  p 
-    | Continuar texto
+  p.text-center
+    | O Banco Nacional de Desenvolvimento Econômico e Social (BNDES) é o maior financiador de grandes projetos na Amazônia. O banco é responsável por financiar barragens, linhas de transmissão, termelétricas e outros de projetos de grande impacto ambiental. Neste site é possível conhecer detalhes das informações apuradas pela Agência Pública na série de reportagens sobre financiamentos do BNDES na Amazônia. 
+  p.text-center
+    | Conheça a série: 
+    a(href='http://www.apublica.org/assunto/bndesnaamazonia') #BNDESnaAmazônia
   
-  h2.text-center Os maiores projetos
-    
+  h3.text-center Os maiores financiamentos, em reais 
+
     <iframe style="border: none;" src="//e.infogr.am/Desembolsos-em-infraestrutura-na-Amaznia-2008-2012" height="787" width="600" frameborder="0" scrolling="no"></iframe>
 
-  h2.text-center Desembolsos do BNDES em infraestrutura
+  h3.text-center Maiores financiamentos em infraestrutura, em R$ bilhões
 
     <iframe style="border: none;" src="//e.infogr.am/Desembolsos-do-BNDES-em-infraestrutura" height="561" width="550" frameborder="0" scrolling="no"></iframe>
 
-  h2.text-center Desembolos do BNDES em infraestrutura, por setor
+  h3.text-center Financiamentos infraestrutura, por setor, em R$ bilhões
 
     <iframe style="border: none;" src="//e.infogr.am/Desembolsos-do-BNDES-no-setor-de-infraestrutura" height="671" width="600" frameborder="0" scrolling="no"></iframe>
