@@ -62,7 +62,8 @@ module.exports = function (app, passport) {
   app.get('/financings/:financingId/edit', auth.requiresLogin, financings.edit)
   app.put('/financings/:financingId', auth.requiresLogin, financings.update)
   app.del('/financings/:financingId',  auth.requiresLogin, financings.destroy)
-  //  
+  app.get('/data/financings.csv', financings.downloadCSV)
+  
   app.param('financingId', financings.load)
 
   // organization routes

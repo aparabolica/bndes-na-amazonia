@@ -11,6 +11,7 @@ var mongoose = require('mongoose')
   , _ = require('underscore')
   , Moment = require('moment')
   , Globalize = require('globalize')
+  , csv = require('csv')
   
 /**
  * Load
@@ -162,5 +163,33 @@ exports.destroy = function(req, res){
   financing.remove(function(err){
     req.flash('info', 'Deleted successfully')
     res.redirect('/financings')
+  })
+}
+
+/**
+ * CSV Download
+ */
+
+exports.downloadCSV = function(req, res){
+  Financing.find({})
+  .sort('name') 
+  .populate('project')
+  .populate('beneficiary')
+  .exec(function(err,financings){
+    var data = [['date','amount','isDirect','description','beneficiary','project','projectDesc']]
+    _.each(financings, function(financing){
+      data.push([ 
+        financing.contractDate,
+        financing.amount,
+        financing.isDirect, 
+        financing.description, 
+        financing.beneficiary, 
+        financing.project.title,
+        financing.project.description
+      ])
+    })
+    csv()
+    .from(data, {columns: true})
+    .to(res)
   })
 }

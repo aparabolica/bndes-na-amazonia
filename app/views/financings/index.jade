@@ -6,6 +6,8 @@ block main
   h1 Financiamentos
 
 block content
+  p 
+    a(href='/data/financings.csv') Baixar toda a lista em CSV
   - if (financings.length)
     table.table
       thead
