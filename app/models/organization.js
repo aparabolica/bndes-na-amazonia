@@ -9,6 +9,7 @@ var mongoose = require('mongoose')
   , Activity = mongoose.model('Activity')
   , Financing = mongoose.model('Financing')
   , _ = require('underscore') 
+  , csv = require('csv')
 
 /**
  * Organization Schema
@@ -54,6 +55,27 @@ OrganizationSchema.statics = {
       .skip(options.perPage * options.page)
       .exec(cb)
   },
+  importFromCSV: function(filename, callback) {
+    var self = this
+    csv()
+    .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
+    .on('record', function(row,index){
+      orgName = row['Nome'].trim()
+      orgProfile = row['Perfil'].trim()
+      self.findOneAndUpdate({name: orgName},{$set: { name: orgName, profile: orgProfile }}, {upsert: true}, function(err,org){
+        if (err) callback(err)
+        org.save(function(err){
+          if (err) callback(err)
+        }) 
+      })
+    })
+    .on('error', function(err){
+      callback(err)
+    })
+    .on('end', function(){
+      callback()
+    })
+  },
   updateRelatedFinancings: function(){
     // get all organizations
     this.find({}, function(err, organizations){
@@ -63,14 +85,11 @@ OrganizationSchema.statics = {
         // update financings related to this organizations
         Financing.find({beneficiary: organization}, function(err, financings){
           if (err) return false
-          // console.log(financings)          
           organization.financings = financings
           organization.totalFinanced = 0
           _.each(financings, function(financing){
-            // console.log(organization)
             organization.totalFinanced = organization.totalFinanced + financing.amount
           })
-          // console.log(organization)
           organization.save()
         })
       })

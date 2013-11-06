@@ -7,8 +7,10 @@ var mongoose = require('mongoose')
   , env = process.env.NODE_ENV || 'development'
   , config = require('../../config/config')[env]
   , Schema = mongoose.Schema
+  , Organization = mongoose.model('Organization')
   , Financing = mongoose.model('Financing')  
   , _ = require('underscore')
+  , csv = require('csv')
   , allStates = ["Acre","Alagoas","Amapá","Amazonas","Bahia","Ceará","Distrito Federal","Espírito Santo","Goiás","Maranhão","Mato Grosso","Mato Grosso do Sul","Minas Gerais","Pará","Paraíba","Paraná","Pernambuco","Piauí","Rio de Janeiro","Rio Grande do Norte","Rio Grande do Sul","Rondônia","Roraima","Santa Catarina","São Paulo","Sergipe","Tocantins"]
 
 
@@ -17,10 +19,13 @@ var mongoose = require('mongoose')
  */
 
 var ProjectSchema = new Schema({
+  executor: [{type : Schema.ObjectId, ref : 'Project'}],
   title: {type : String, default : '', trim : true},
   description: {type : String, default : '', trim : true},
   financings: [{type : Schema.ObjectId, ref : 'Financing'}],
-  financingTotal: {type: Number, default: 0},
+  totalFinanced: {type: Number, default: 0},
+  legalActionsQty: {type: Number, default: 0},
+  legalActionsDescription: {type : String, default : '', trim : true},
   states: [{type:String, enum: allStates}],
   createdAt  : {type : Date, default : Date.now}
 })
@@ -74,24 +79,55 @@ ProjectSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort({'financingTotal': -1}) 
+      .sort({'totalFinanced': -1}) 
       .limit(options.perPage)
       .skip(options.perPage * options.page)
       .exec(cb)
+  },
+  importFromCSV: function(filename, callback) {
+    var self = this
+    csv()
+    .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
+    .on('record', function(row,index){
+      // find executor organization
+      Organization.find({name: row['Executor']}, function(err, organization){
+        if (err) callback(err)
+        record = {
+          executor: organization,
+          title: row['Título'],
+          description: row['Descrição'],
+          legalActionsQty: row['Quantidade de ações legais'],
+          legalActionsDescription: row['Descrição das ações legais']
+        }
+        self.findOneAndUpdate({title: record.title},{$set: record}, {upsert: true}, function(err,proj){
+          if (err) callback(err)
+          proj.save(function(err){
+            if (err) callback(err)
+          }) 
+        })        
+      })
+    })
+    .on('error', function(err){
+      callback(err)
+    })
+    .on('end', function(){
+      callback()
+    })
   },
   updateRelatedFinancings: function(){
     // get all projects
     this.find({}, function(err, projects){
       if (err) done(err)
+        console.log(projects)      
       // for each
       _.each(projects, function(project) {
         // update financings related to this project
         Financing.find({project: project}, function(err, financings){
           if (err) return false
           project.financings = financings
-          project.financingTotal = 0
+          project.totalFinanced = 0
           _.each(financings, function(financing){
-            project.financingTotal = project.financingTotal + financing.amount
+            project.totalFinanced = project.totalFinanced + financing.amount
           })
           project.save()
         })
