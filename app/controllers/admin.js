@@ -36,51 +36,26 @@ exports.index = function(req, res){
 
 exports.populate = function(req,res) {
   // Remove current data
-  Financing.collection.remove(function(err){
-    if (err) res.render(500) 
-    Project.collection.remove(function(err){
-      if (err) res.render(500) 
+  // Financing.collection.remove(function(err){
+  //   if (err) res.render(500) 
+  //   Project.collection.remove(function(err){
+  //     if (err) res.render(500) 
       Organization.collection.remove(function(err){
         if (err) res.render(500)
-        // starts reading csv
-        csv()
-        .from.path(__dirname+'/../../data/financings.csv', { columns: true, delimiter: ',', escape: '"' })
-        .on('record', function(row,index){
-          beneficiaryName = row['Beneficiado (Empresa/Estado)'].trim()
-          // insert or update beneficiary
-          Organization.findOneAndUpdate({name: beneficiaryName},{$set: { name: beneficiaryName }}, {upsert: true}, function(err,org){
+        // import organizations 
+        Organization.importFromCSV('/../../data/organizations.csv', function(err){
+          if (err) res.render(500)
+          Project.importFromCSV('/../../data/projects.csv', function(err){
             if (err) res.render(500)
-            projectInfo = {
-              title: row['Resumo do Projeto'].trim(),
-              description: row['Descrição do Projeto'].trim()
-            }
-            // insert or update project
-            Project.findOneAndUpdate(projectInfo,{$set:projectInfo},{upsert:true},function(err,proj){
+            Financing.importFromCSV('/../../data/financings.csv', function(err){
               if (err) res.render(500)
-              financingInfo = {
-                contractDate: moment(row['Contratação'].trim(), 'DD/MM/YYYY'),
-                isDirect: row['Tipo de operação'].trim() == 'direto',
-                project: proj,
-                beneficiary: org,  
-                amount: row['Valor da Operação'].trim()
-              }
-              Financing.findOneAndUpdate(financingInfo,{$set:financingInfo},{upsert:true},function(err){
-                if (err) res.render(500)
-              })
-            })
+              Project.updateRelatedFinancings()
+              Organization.updateRelatedFinancings()                
+            })            
           })
-          
-                    
         })
-        .on('end', function(){
-          Project.updateRelatedFinancings()
-          Organization.updateRelatedFinancings()
-        })
-        .on('error', function(error){
-          res.render(500)
-        })
-        res.redirect('admin')        
       })
-    })
-  })
+      res.redirect('admin')
+  //   })
+  // })
 }
