@@ -83,7 +83,7 @@ module.exports = function (app, passport) {
 
   // admin routes
   app.get('/admin', admin.index)
-  // app.get('/admin/populate', admin.populate)
+  app.get('/admin/populate', admin.populate)
   app.get('/admin/populate/organizations', populate.organizations)
 
 }
