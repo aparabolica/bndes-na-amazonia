@@ -11,13 +11,3 @@ header#header
               a(href="/projects/", title="Projetos") Projetos
             li
               a(href="/organizations/", title="Organizações") Beneficiários
-          
-          ul.nav.pull-right
-            if (req.isAuthenticated())
-              li
-                a(href="/users/"+req.user.id, title="Perfil") Perfil
-              li
-                a(href="/logout", title="sair") Sair
-            else
-              li
-                a(href="/login", title="Fazer") Entrar
