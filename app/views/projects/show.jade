@@ -41,6 +41,14 @@ block content
           .text-center
             b
               =accounting.formatMoney(project.financingTotal, "R$", 2, ".", ",")
+    
+  - if (project.legalActionsQty > 0)
+    h2 
+      =project.legalActionsQty
+      |  ações do Ministério Público
+    p=project.legalActionsDescription
+  - else
+    p Não há ações do Ministério Público para este projeto
 
   p 
     <a href="javascript:history.back()">Voltar</a>

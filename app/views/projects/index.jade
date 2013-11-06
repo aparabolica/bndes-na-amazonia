@@ -11,14 +11,18 @@ block content
       thead
         tr
           th Nome
-          th Financiamentos Mapeados
+          th Total Financiado
+          th Ações no Ministério Público
       tbody
       - each project in projects
         tr
           td
             a(href='/projects/'+project._id, title=project.title) #{project.title}
           td
-            =accounting.formatMoney(project.financingTotal, "R$", 2, ".", ",")
+            =accounting.formatMoney(project.totalFinanced, "R$", 2, ".", ",")
+          td
+            =project.legalActionsQty
+            
 
     - if (pages > 1)
       .pagination
