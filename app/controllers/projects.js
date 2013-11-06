@@ -160,7 +160,7 @@ exports.downloadCSV = function(req, res){
       ])
     })
     csv()
-    .from(data, {columns: true, escape: '"'})
+    .from(data)
     .to(res)
   })
 }
