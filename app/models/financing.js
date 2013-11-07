@@ -83,12 +83,13 @@ FinancingSchema.statics = {
         mongoose.model('Project').findOne({title: row['Projeto']}, function(err, project){
           if (err) callback(err)
           record = {
-            contractDate: Moment(row['Data'].trim() || '01/01/1900', 'DD/MM/YYYY'),
+            contractDate: Moment(row['Data'].trim() || '01/01/1900', 'DD/MM/YY'),
             isDirect: row['Tipo'] == 'direto',
             project: project,
             beneficiary: beneficiary,
             amount: row['Valor']
           }
+          console.log(record)
           // save financing
           self.findOneAndUpdate({contractDate:record.contractDate, isDirect: record.isDirect, amount: record.amount },{$set: record}, {upsert: true}, function(err,financing){
             if (err) callback(err)
