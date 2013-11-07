@@ -19,7 +19,6 @@ var mongoose = require('mongoose')
  */
 
 var ProjectSchema = new Schema({
-  executor: [{type : Schema.ObjectId, ref : 'Project'}],
   title: {type : String, default : '', trim : true},
   description: {type : String, default : '', trim : true},
   financings: [{type : Schema.ObjectId, ref : 'Financing'}],
@@ -89,22 +88,17 @@ ProjectSchema.statics = {
     csv()
     .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
     .on('record', function(row,index){
-      // find executor organization
-      Organization.find({name: row['Executor']}, function(err, organization){
+      record = {
+        title: row['Título'],
+        description: row['Descrição'],
+        legalActionsQty: row['Quantidade de ações legais'],
+        legalActionsDescription: row['Descrição das ações legais']
+      }
+      self.findOneAndUpdate({title: record.title},{$set: record}, {upsert: true}, function(err,proj){
         if (err) callback(err)
-        record = {
-          executor: organization,
-          title: row['Título'],
-          description: row['Descrição'],
-          legalActionsQty: row['Quantidade de ações legais'],
-          legalActionsDescription: row['Descrição das ações legais']
-        }
-        self.findOneAndUpdate({title: record.title},{$set: record}, {upsert: true}, function(err,proj){
+        proj.save(function(err){
           if (err) callback(err)
-          proj.save(function(err){
-            if (err) callback(err)
-          }) 
-        })        
+        }) 
       })
     })
     .on('error', function(err){
@@ -116,20 +110,20 @@ ProjectSchema.statics = {
   },
   updateRelatedFinancings: function(){
     // get all projects
-    this.find({}, function(err, projects){
+    this.find({},'', function(err, projects){
       if (err) done(err)
-        console.log(projects)      
       // for each
-      _.each(projects, function(project) {
+      _.each(projects, function(proj) {
+        // console.log(mongoose.Types.ObjectId(proj._id.toHexString()))
         // update financings related to this project
-        Financing.find({project: project}, function(err, financings){
+        Financing.find({project: proj._id.toHexString()}, function(err, financings){
           if (err) return false
-          project.financings = financings
-          project.totalFinanced = 0
+          proj.financings = financings
+          proj.totalFinanced = 0
           _.each(financings, function(financing){
-            project.totalFinanced = project.totalFinanced + financing.amount
+            proj.totalFinanced = proj.totalFinanced + financing.amount
           })
-          project.save()
+          proj.save()
         })
       })
     })

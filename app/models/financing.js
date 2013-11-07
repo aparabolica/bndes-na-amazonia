@@ -89,7 +89,6 @@ FinancingSchema.statics = {
             beneficiary: beneficiary,
             amount: row['Valor']
           }
-          console.log(record)
           // save financing
           self.findOneAndUpdate({contractDate:record.contractDate, isDirect: record.isDirect, amount: record.amount },{$set: record}, {upsert: true}, function(err,financing){
             if (err) callback(err)
@@ -107,7 +106,6 @@ FinancingSchema.statics = {
       callback()
     })
   }
-
 }
 
 mongoose.model('Financing', FinancingSchema)

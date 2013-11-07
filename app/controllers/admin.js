@@ -36,10 +36,10 @@ exports.index = function(req, res){
 
 exports.populate = function(req,res) {
   // Remove current data
-  // Financing.collection.remove(function(err){
-  //   if (err) res.render(500) 
-  //   Project.collection.remove(function(err){
-  //     if (err) res.render(500) 
+  Financing.collection.remove(function(err){
+    if (err) res.render(500) 
+    Project.collection.remove(function(err){
+      if (err) res.render(500) 
       Organization.collection.remove(function(err){
         if (err) res.render(500)
         // import organizations 
@@ -50,12 +50,12 @@ exports.populate = function(req,res) {
             Financing.importFromCSV('/../../data/financings.csv', function(err){
               if (err) res.render(500)
               Project.updateRelatedFinancings()
-              Organization.updateRelatedFinancings()                
+              //Organization.updateRelatedFinancings()                
             })            
           })
         })
       })
       res.redirect('admin')
-  //   })
-  // })
+    })
+  })
 }
