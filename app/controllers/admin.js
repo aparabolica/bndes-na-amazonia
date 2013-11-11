@@ -67,7 +67,7 @@ exports.populate = function(req,res) {
       if (err) res.render(500)      
       Financing.importFromCSV('/../../data/financings.csv', function(err){
         if (err) res.render(500)
-        res.render('admin')
+        res.render('home/index')
       })
     })
   })
