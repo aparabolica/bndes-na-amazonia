@@ -1,27 +1,20 @@
-# Elos 
+# BNDES na Amazônia
 
-A mapping application.
+*(Em português)*
 
-## Install
+Este é o repositório do código-fonte do bndesnaamazonia.org, um site de dados abertos sobre financiamentos do [BNDES](www.bndes.gov.br) em grandes projetos na Amazônia. Esta aplicação é desenvolvida em NodeJS, utilizando o framework Express. 
 
-**NOTE:** You need to have node.js and mongodb installed and running.
+Por favor, abra um [issue](https://github.com/oeco/bndes-na-amazonia/issues/new) caso encontre problemas no site ou queira sugerir melhorias.
 
-```sh
-  $ git clone git://github.com/vgeorge/elos.git
-  $ npm install
-  $ cp config/config.example.js config/config.js
-  $ npm start
-```
+*(English)*
 
-**NOTE:** Do not forget to update your facebook twitter and github APP_ID and APP_SECRET in `config/config.js`. Also if you want to use image uploads, don't forget to replace the S3 and Rackspace keys in `config/imager.js`.
+This is the repository for the source code of bndesnaamazonia.org, a open data site about [BNDES](www.bndes.gov.br) financings for big projects in the Brazilian Amazon rainforest.
 
-Then visit [http://localhost:3000/](http://localhost:3000/)
+Please open a [issue](https://github.com/oeco/bndes-na-amazonia/issues/new) if you found bugs or want to sugest new features.
 
-## Tests
+## Developers
 
-```sh
-$ npm test
-```
+If you want to contribute to the source code of this project, please clone it locally and run `npm install` to install dependencies. It uses NodeJS, Express and MongoDB.
 
 ## License
 (The MIT License)
