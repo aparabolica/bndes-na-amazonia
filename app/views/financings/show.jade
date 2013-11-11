@@ -4,7 +4,7 @@ block main
   h1= financing.title
 
 block content
-  h2 Ficha do financiamento
+  h2 Dados sobre este financiamento
   p 
     | Beneficiário: 
     - if (financing.beneficiary)
@@ -17,15 +17,8 @@ block content
       a(href='/projects/'+financing.project._id)=financing.project.title
     - else
       | Não há projetos associados a este financiamento!
-  p
-    | Descrição: 
-    - if (financing.description)
-      =financing.description
-    - else
-      | Não há descrição para este projeto
-      
   p 
-    | Data:
+    | Data: 
     =Moment(financing.contractDate).utc().format('DD/MM/YYYY')
   p 
     | Valor: #{accounting.formatMoney(financing.amount, "R$", 2, ".", ",")}
@@ -35,5 +28,6 @@ block content
       | Direto
     - else 
       | Indireto
-  p
-    <a href="javascript:history.back()">Voltar</a>
+
+  p.pull-right 
+    a.btn(href="javascript:history.back()" class="btn-primary") Voltar
