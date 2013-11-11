@@ -33,6 +33,25 @@ OrganizationSchema.path('name').validate(function (name) {
 }, 'O nome da organização deve ter entre 3 e 80 caracteres')
 
 /**
+ * Methods
+ */
+
+OrganizationSchema.methods = {
+  updateTotalFinanced: function(){
+    var self = this
+    // update financings related to this organization
+    Financing.find({beneficiary: self}, function(err, financings){
+      if (err) return false
+      self.totalFinanced = 0
+      _.each(financings, function(financing){
+        self.totalFinanced = self.totalFinanced + financing.amount
+      })
+      self.save()      
+    })
+  }
+}
+
+/**
  * Statics
  */
 
@@ -45,7 +64,6 @@ OrganizationSchema.statics = {
       .populate({path: 'financings', options: { sort: { 'contractDate': 1 } } })
       .exec(done)
   },
-
   list: function (options, cb) {
     var criteria = options.criteria || {}
 
@@ -57,45 +75,32 @@ OrganizationSchema.statics = {
   },
   importFromCSV: function(filename, callback) {
     var self = this
+
     csv()
     .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
-    .on('record', function(row,index){
-      orgName = row['Nome'].trim()
-      orgProfile = row['Perfil'].trim()
-      self.findOneAndUpdate({name: orgName},{$set: { name: orgName, profile: orgProfile }}, {upsert: true}, function(err,org){
-        if (err) callback(err)
-        org.save(function(err){
-          if (err) callback(err)
-        }) 
+    .to.array(function(data){
+      // save each project
+      _.each(data, function(row){
+        newOrganization = new self({
+          name: row['Nome'].trim(),
+          profile: row['Perfil'].trim()
+        })
+        newOrganization.save()
       })
+      callback()
     })
     .on('error', function(err){
       callback(err)
     })
-    .on('end', function(){
-      callback()
-    })
   },
-  updateRelatedFinancings: function(){
-    // get all organizations
+  updateAllFinancedTotals: function(){
     this.find({}, function(err, organizations){
       if (err) done(err)
-      // for each
       _.each(organizations, function(organization) {
-        // update financings related to this organizations
-        Financing.find({beneficiary: organization}, function(err, financings){
-          if (err) return false
-          organization.financings = financings
-          organization.totalFinanced = 0
-          _.each(financings, function(financing){
-            organization.totalFinanced = organization.totalFinanced + financing.amount
-          })
-          organization.save()
-        })
+        organization.updateTotalFinanced()
       })
     })
   }
-
 }
 
 mongoose.model('Organization', OrganizationSchema)

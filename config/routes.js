@@ -14,7 +14,6 @@ var users = require('../app/controllers/users')
   , financings = require('../app/controllers/financings')
   , organizations = require('../app/controllers/organizations')
   , admin = require('../app/controllers/admin')
-  , populate = require('../app/controllers/populate')
   , auth = require('./middlewares/authorization')
 
 /**
@@ -84,6 +83,5 @@ module.exports = function (app, passport) {
   // admin routes
   app.get('/admin', admin.index)
   app.get('/admin/populate', admin.populate)
-  app.get('/admin/populate/organizations', populate.organizations)
 
 }

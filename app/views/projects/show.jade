@@ -40,7 +40,7 @@ block content
         td 
           .text-center
             b
-              =accounting.formatMoney(project.financingTotal, "R$", 2, ".", ",")
+              =accounting.formatMoney(project.totalFinanced, "R$", 2, ".", ",")
     
   - if (project.legalActionsQty > 0)
     h2 

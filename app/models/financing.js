@@ -9,6 +9,7 @@ var mongoose = require('mongoose')
   , _ = require('underscore')
   , Moment = require('moment') 
   , csv = require('csv')
+  , async = require('async')
 
 /**
  * Financing Schema
@@ -31,10 +32,6 @@ FinancingSchema.path('isDirect').validate(function (isDirect) {
   return (typeof(isDirect) == "boolean")
 }, 'Informe se o financiamento é direto ou indireto.')
 
-// FinancingSchema.path('description').validate(function (description) {
-//   return (description.length > 10 && description.length <= 500) 
-// }, 'A descrição do financiamento deve ter entre 10 e 500 caracteres')
-
 FinancingSchema.path('amount').validate(function (amount) {
   return ((amount) && amount > 0)
 }, 'O montante financiado deve ser um número positivo e maior que zero.')
@@ -44,8 +41,17 @@ FinancingSchema.path('amount').validate(function (amount) {
  */
 
 FinancingSchema.post('save', function () {
-  // mongoose.model('Project').updateRelatedFinancings()
-  // mongoose.model('Organization').updateRelatedFinancings()  
+  var self = this
+  mongoose.model('Project').findOne({_id: this.project})
+    .exec(function(err, project){
+      project.financings.addToSet(self)
+      project.save()      
+  })
+  mongoose.model('Organization').findOne(this.beneficiary)
+    .exec(function(err, beneficiary){
+      beneficiary.financings.addToSet(self)
+      beneficiary.save()      
+  })
 })
 
 /**
@@ -53,15 +59,12 @@ FinancingSchema.post('save', function () {
  */
 
 FinancingSchema.statics = {
-
-
   load: function (id, done) {
     this.findOne({ _id : id })
       .populate('project', 'title')
       .populate('beneficiary')
       .exec(done)
   },
-
   list: function (options, cb) {
     var criteria = options.criteria || {}
     this.find(criteria)
@@ -72,39 +75,38 @@ FinancingSchema.statics = {
       .skip(options.perPage * options.page)
       .exec(cb)
   },
-  importFromCSV: function(filename, callback) {
+  importFromCSV: function(filename, doneImporting) {
     var self = this
+      , Project = mongoose.model('Project')
+      , Organization = mongoose.model('Organization')
+    
     csv()
     .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
-    .on('record', function(row,index){
-      // find executor organization      
-      mongoose.model('Organization').findOne({name: row['Beneficiário']}, function(err, beneficiary){
-        if (err) callback(err)
-        mongoose.model('Project').findOne({title: row['Projeto']}, function(err, project){
-          if (err) callback(err)
-          record = {
-            contractDate: Moment(row['Data'].trim() || '01/01/1900', 'DD/MM/YY'),
-            isDirect: row['Tipo'] == 'direto',
-            project: project,
-            beneficiary: beneficiary,
-            amount: row['Valor']
-          }
-          // save financing
-          self.findOneAndUpdate({contractDate:record.contractDate, isDirect: record.isDirect, amount: record.amount },{$set: record}, {upsert: true}, function(err,financing){
-            if (err) callback(err)
-            financing.save(function(err){
-              if (err) callback(err)
-            })
-          })
-        })        
+    .to.array(function(data){
+      async.eachSeries(data, function(row, doneSavingAFinancing){
+        mongoose.model('Organization').findOne({name: row['Beneficiário']}, function(err, beneficiary){
+          if (err) doneSavingAFinancing(err)
+          mongoose.model('Project').findOne({title: row['Projeto']}, function(err, project){
+            if (err) doneSavingAFinancing(err)
+            new self({
+              contractDate: Moment(row['Data'].trim() || '01/01/1900', 'DD/MM/YY'),
+              isDirect: row['Tipo'] == 'direto',
+              project: project,
+              beneficiary: beneficiary,
+              amount: row['Valor']
+            }).save(doneSavingAFinancing)
+          })          
+        })
+      }, function(err){
+        Project.updateAllFinancedTotals()
+        Organization.updateAllFinancedTotals()
+        doneImporting()
       })
     })
     .on('error', function(err){
       callback(err)
     })
-    .on('end', function(){
-      callback()
-    })
+
   }
 }
 

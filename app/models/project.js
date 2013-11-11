@@ -46,18 +46,18 @@ ProjectSchema.path('description').validate(function (description) {
  */
 
 ProjectSchema.methods = {
-  
-  chartImageUrl: function() {
+  updateTotalFinanced: function(){
     var self = this
-      , pie = new Quiche('pie');
-    pie.setTransparentBackground()
-    _.each(self.financings, function(financing){
-      financing
-      pie.addData(financing.amount, financing.title, 'FF0000');      
+    // update financings related to this project
+    Financing.find({project: self}, function(err, financings){
+      if (err) return false
+      self.totalFinanced = 0
+      _.each(financings, function(financing){
+        self.totalFinanced = self.totalFinanced + financing.amount
+      })
+      self.save()      
     })
-    return pie.getUrl(true)
   }
-
 }
 
 /**
@@ -65,15 +65,13 @@ ProjectSchema.methods = {
  */
 
 ProjectSchema.statics = {
-
-
+  
   load: function (id, done) {
     this
       .findOne({ _id : id })
       .populate({path: 'financings', options: { sort: { 'contractDate': 1 } } })
       .exec(done)
   },
-
   list: function (options, cb) {
     var criteria = options.criteria || {}
 
@@ -87,57 +85,28 @@ ProjectSchema.statics = {
     var self = this
     csv()
     .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
-    .on('record', function(row,index){
-      record = {
-        title: row['Título'],
-        description: row['Descrição'],
-        legalActionsQty: row['Quantidade de ações legais'],
-        legalActionsDescription: row['Descrição das ações legais']
-      }
-      self.findOneAndUpdate({title: record.title},{$set: record}, {upsert: true}, function(err,proj){
-        if (err) callback(err)
-        proj.save(function(err){
-          if (err) callback(err)
-        }) 
-      })
-    })
-    .on('error', function(err){
-      callback(err)
-    })
-    .on('end', function(){
-      callback()
-    })
-  },
-  updateRelatedFinancings: function(){
-    // get all projects
-    this.find({},'', function(err, projects){
-      if (err) done(err)
-      // for each
-      _.each(projects, function(proj) {
-        // console.log(mongoose.Types.ObjectId(proj._id.toHexString()))
-        // update financings related to this project
-        Financing.find({project: proj._id.toHexString()}, function(err, financings){
-          if (err) return false
-          proj.financings = financings
-          proj.totalFinanced = 0
-          _.each(financings, function(financing){
-            proj.totalFinanced = proj.totalFinanced + financing.amount
-          })
-          proj.save()
+    .to.array( function(data){
+      // save each project
+      _.each(data, function(row){
+        newProject = new self({
+          title: row['Título'],
+          description: row['Descrição'],
+          legalActionsQty: row['Quantidade de ações legais'],
+          legalActionsDescription: row['Descrição das ações legais']
         })
+        newProject.save()
       })
-    })
+      callback()
+    });
   },
-  asArrayDataTable: function(done) {
-    var arrayDataTable = []
+  updateAllFinancedTotals: function(){
     // get all projects
     this.find({}, function(err, projects){
       if (err) done(err)
       // for each
-      _.each(projects, function(project) {
-        arrayDataTable.push([project.title, project.financingTotal])
+      _.each(projects, function(proj) {
+        proj.updateTotalFinanced()
       })
-      done(arrayDataTable)
     })
   }
 }

@@ -20,7 +20,6 @@ block content
         .control-group
           label.control-label(for='beneficiary') Beneficiário
           .controls
-            - console.log(financing)
             - if (financing.beneficiary)
               - var beneficiaryId = financing.beneficiary._id.toString()
             select(class='chosen-select', data-placeholder="Escolha o benefiário do financiamento..." name="beneficiary")

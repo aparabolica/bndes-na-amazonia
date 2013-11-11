@@ -11,7 +11,7 @@ var mongoose = require('mongoose')
   , States = mongoose.model('States')
   , csv      = require('csv')
   , utils = require('../../lib/utils')
-  
+  , async = require('async')
   
 /**
  * Index - list tasks and app status
@@ -26,7 +26,7 @@ exports.index = function(req, res){
         economicActivitiesCount: economicActivitiesCount,
         statesCount: statesCount
       })
-    })    
+    })
   })
 }
 
@@ -35,27 +35,40 @@ exports.index = function(req, res){
  */
 
 exports.populate = function(req,res) {
+
   // Remove current data
-  Financing.collection.remove(function(err){
-    if (err) res.render(500) 
-    Project.collection.remove(function(err){
-      if (err) res.render(500) 
-      Organization.collection.remove(function(err){
+  async.parallel([
+    function(callback){
+      Financing.collection.remove(callback)
+    },
+    function(callback){
+      Project.collection.remove(callback)
+    },
+    function(callback){
+      Organization.collection.remove(callback)            
+    }
+  ],
+  // After that
+  function(err, results){
+    if (err) res.render(500)
+
+    // Import organizations and projects
+    async.parallel([
+      function(callback){
+        Organization.importFromCSV('/../../data/organizations.csv', callback)
+      },
+      function(callback){
+         Project.importFromCSV('/../../data/projects.csv', callback)
+      }
+    ],
+
+    // Then import financings
+    function(err, results){
+      if (err) res.render(500)      
+      Financing.importFromCSV('/../../data/financings.csv', function(err){
         if (err) res.render(500)
-        // import organizations 
-        Organization.importFromCSV('/../../data/organizations.csv', function(err){
-          if (err) res.render(500)
-          Project.importFromCSV('/../../data/projects.csv', function(err){
-            if (err) res.render(500)
-            Financing.importFromCSV('/../../data/financings.csv', function(err){
-              if (err) res.render(500)
-              Project.updateRelatedFinancings()
-              //Organization.updateRelatedFinancings()                
-            })            
-          })
-        })
+        res.render('admin')
       })
-      res.redirect('admin')
     })
   })
 }
