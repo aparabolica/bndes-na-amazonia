@@ -151,16 +151,22 @@ exports.downloadCSV = function(req, res){
   Project.find({})
   .sort('title') 
   .exec(function(err,projects){
-    var data = [['title','description','totalFinanced']]
+    var data = [['título','descrição','número_de_ações','total_financiado']]
     _.each(projects, function(project){
+      console.log(project)
       data.push([ 
         project.title,
         project.description,
-        project.financingTotal        
+        project.legalActionsQty,        
+        project.totalFinanced        
       ])
     })
+    res.setHeader('Content-disposition', 'attachment; filename=projetos.csv');
+    res.writeHead(200, {
+      'Content-Type': 'text/csv'
+    });
     csv()
     .from(data)
-    .to(res)
+    .to(res)    
   })
 }

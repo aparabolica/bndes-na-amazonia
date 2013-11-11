@@ -176,20 +176,22 @@ exports.downloadCSV = function(req, res){
   .populate('project')
   .populate('beneficiary')
   .exec(function(err,financings){
-    var data = [['date','amount','isDirect','description','beneficiary','project','projectDesc']]
+    var data = [['data','valor','tipo','beneficiário','projeto']]
     _.each(financings, function(financing){
       data.push([ 
-        financing.contractDate,
+        Moment(financing.contractDate).utc().format('DD/MM/YYYY'),
         financing.amount,
-        financing.isDirect, 
-        financing.description, 
-        financing.beneficiary, 
-        financing.project.title,
-        financing.project.description
+        financing.isDirect ? 'direto':'indireto', 
+        financing.beneficiary.name,
+        financing.project.title
       ])
     })
+    res.setHeader('Content-disposition', 'attachment; filename=financiamentos.csv');
+    res.writeHead(200, {
+      'Content-Type': 'text/csv'
+    });
     csv()
-    .from(data, {columns: true})
+    .from(data)
     .to(res)
   })
 }

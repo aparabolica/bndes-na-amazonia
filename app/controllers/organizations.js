@@ -8,6 +8,7 @@ var mongoose = require('mongoose')
   , Activity = mongoose.model('Activity')
   , utils = require('../../lib/utils')
   , _ = require('underscore')
+  , csv = require('csv')
 
 /**
  * Load
@@ -157,5 +158,31 @@ exports.destroy = function(req, res){
   organization.remove(function(err){
     req.flash('info', 'Removido com sucesso')
     res.redirect('/organizations')
+  })
+}
+
+/**
+ * Download CSV feature
+ */
+
+exports.downloadCSV = function(req, res){
+  Organization.find({})
+  .sort('name') 
+  .exec(function(err,organizations){
+    var data = [['nome','perfil','total_financiado']]
+    _.each(organizations, function(organization){
+      data.push([ 
+        organization.name,
+        organization.profile, 
+        organization.totalFinanced
+      ])
+    })
+    res.setHeader('Content-disposition', 'attachment; filename=beneficiarios.csv');
+    res.writeHead(200, {
+      'Content-Type': 'text/csv'
+    });
+    csv()
+    .from(data)
+    .to(res)
   })
 }

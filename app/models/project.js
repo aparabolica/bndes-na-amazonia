@@ -91,7 +91,7 @@ ProjectSchema.statics = {
         newProject = new self({
           title: row['Título'],
           description: row['Descrição'],
-          legalActionsQty: row['Quantidade de ações legais'],
+          legalActionsQty: row['Quantidade de ações legais'] || 0,
           legalActionsDescription: row['Descrição das ações legais']
         })
         newProject.save()
