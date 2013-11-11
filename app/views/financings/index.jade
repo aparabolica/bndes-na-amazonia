@@ -8,8 +8,12 @@ block main
 block content
   - if (financings.length)
     p
-      | Lista de financiamento mapeados
       a.btn(href='/dados/financiamentos.csv', class="pull-right btn-primary") Baixar em CSV
+    - if (pages > 1)
+      .pagination
+        ul
+          != createPagination(pages, page)
+      
     table.table
       thead
         tr

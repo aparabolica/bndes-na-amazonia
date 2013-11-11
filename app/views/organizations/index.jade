@@ -6,8 +6,12 @@ block main
 block content
   - if (organizations.length)
     p
-      | Lista de beneficiários mapeados
       a.btn(href='/dados/beneficiarios.csv', class="pull-right btn-primary") Baixar em CSV
+    - if (pages > 1)
+      .pagination
+        ul
+          != createPagination(pages, page)
+      
   
     table.table
       thead
@@ -23,11 +27,16 @@ block content
             td
               .text-center
                 =accounting.formatMoney(organization.totalFinanced, "R$", 2, ".", ",")
+            td 
+              a.btn(href='/organizations/'+organization._id, class="btn-info") Detalhes
+                
 
     - if (pages > 1)
       .pagination
         ul
           != createPagination(pages, page)
+
+
   - else
     p Não há organizações mapeadas.
     a.btn(href='/populate') Carregar informações agora    
