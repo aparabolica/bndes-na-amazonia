@@ -5,8 +5,9 @@ block main
 
 block content
   - if (projects.length)
-    p 
-      a(href='/data/projects.csv') Baixar em CSV  
+    p
+      | Lista de projetos mapeados
+      a.btn(href='/dados/projetos.csv', class="pull-right btn-primary") Baixar em CSV
     table.table
       thead
         tr

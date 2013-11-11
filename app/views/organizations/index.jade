@@ -5,6 +5,10 @@ block main
 
 block content
   - if (organizations.length)
+    p
+      | Lista de beneficiários mapeados
+      a.btn(href='/dados/beneficiarios.csv', class="pull-right btn-primary") Baixar em CSV
+  
     table.table
       thead
         tr

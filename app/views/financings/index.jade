@@ -7,8 +7,9 @@ block main
 
 block content
   - if (financings.length)
-    p 
-      a(href='/data/financings.csv') Baixar em CSV
+    p
+      | Lista de financiamento mapeados
+      a.btn(href='/dados/financiamentos.csv', class="pull-right btn-primary") Baixar em CSV
     table.table
       thead
         tr
