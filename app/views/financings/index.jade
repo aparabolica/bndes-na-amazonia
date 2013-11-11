@@ -47,7 +47,7 @@ block content
                 =accounting.formatMoney(financing.amount, "R$", 2, ".", ",")
 
             td 
-              a(href='/financings/'+financing._id, title="Abrir financiamento") Exibir
+              a.btn(href='/financings/'+financing._id, title="Abrir financiamento", class="btn-info") Detalhes
               
 
     - if (pages > 1)
