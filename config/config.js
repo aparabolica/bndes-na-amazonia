@@ -4,18 +4,24 @@ var path = require('path')
 
 module.exports = {
   development: {
-    db: 'mongodb://localhost/bna_dev',
+    db: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/bna_dev',
     root: rootPath,
     app: {
       name: 'BNDES na Amazônia'
     }
   },
   test: {
-    db: 'mongodb://localhost/bna_test',
+    db: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/bna_test',
+    root: rootPath,
+    app: {
+      name: 'BNDES na Amazônia'
+    },
+  },
+  production: {    
+    db: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/heroku_app18624412',
     root: rootPath,
     app: {
       name: 'BNDES na Amazônia'
     }
-  },
-  production: {}
+  }
 }
