@@ -2,13 +2,13 @@
 
 *(Em português)*
 
-Este é o repositório do código-fonte do bndesnaamazonia.org, um site de dados abertos sobre financiamentos do [BNDES](www.bndes.gov.br) em grandes projetos na Amazônia. Esta aplicação é desenvolvida em NodeJS, utilizando o framework Express. 
+Este é o repositório do código-fonte do [www.bndesnaamazonia.org](http://bndesnaamazonia.org), um site de dados abertos sobre financiamentos do [BNDES](www.bndes.gov.br) em grandes projetos na Amazônia. 
 
 Por favor, abra um [issue](https://github.com/oeco/bndes-na-amazonia/issues/new) caso encontre problemas no site ou queira sugerir melhorias.
 
 *(English)*
 
-This is the repository for the source code of bndesnaamazonia.org, a open data site about [BNDES](www.bndes.gov.br) financings for big projects in the Brazilian Amazon rainforest.
+This is the repository for the source code of [www.bndesnaamazonia.org](http://bndesnaamazonia.org), a open data site about [BNDES](www.bndes.gov.br) financings for big projects in the Brazilian Amazon rainforest.
 
 Please open a [issue](https://github.com/oeco/bndes-na-amazonia/issues/new) if you found bugs or want to sugest new features.
 
