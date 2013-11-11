@@ -28,3 +28,6 @@ block content
       .pagination
         ul
           != createPagination(pages, page)
+  - else
+    p Não há projetos mapeados.
+    a.btn(href='/populate') Carregar informações agora
