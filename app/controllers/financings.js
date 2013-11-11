@@ -43,6 +43,7 @@ exports.index = function(req, res){
     if (err) return res.render('500')
     Financing.count().exec(function (err, count) {
       res.render('financings/index', {
+        title: 'Financiamentos',
         financings: financings,
         page: page + 1,
         pages: Math.ceil(count / perPage),

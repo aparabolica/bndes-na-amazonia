@@ -41,7 +41,7 @@ exports.index = function(req, res){
     if (err) return res.render('500')    
     Project.count().exec(function (err, count) {
       res.render('projects/index', {
-        title: 'projects',
+        title: 'Projetos',
         projects: projects,
         page: page + 1,
         pages: Math.ceil(count / perPage),

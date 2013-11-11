@@ -40,6 +40,7 @@ exports.index = function(req, res){
     if (err) return res.render('500')
     Organization.count().exec(function (err, count) {
       res.render('organizations/index', {
+        title: 'Beneficiários',
         organizations: organizations,
         page: page + 1,
         pages: Math.ceil(count / perPage),

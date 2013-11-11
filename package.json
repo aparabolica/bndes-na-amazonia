@@ -1,12 +1,10 @@
 {
-  "name": "elos",
-  "description": "A mapping application",
+  "name": "BNDES na Amazônia",
+  "description": "BNDES na Amazônia",
   "keywords": [
-    "express",
-    "mongoose",
-    "mongodb",
-    "passport",
-    "demo"
+    "ecolab",
+    "bndes",
+    "amazonia"
   ],
   "version": "0.0.1",
   "private": false,
