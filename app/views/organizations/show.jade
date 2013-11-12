@@ -15,6 +15,8 @@ block content
           .text-center Data
         th 
           .text-center Tipo
+        th
+          .text-center Projeto
         th 
           .text-center Valor
     tbody
@@ -22,7 +24,7 @@ block content
         tr
           td
             .text-center
-              a(href='/financings/'+financing._id, title="Abrir financiamento")=Moment(financing.contractDate).format('DD/MM/YYYY')
+              a(href='/financings/'+financing._id, title="Ver este financiamento")=Moment(financing.contractDate).format('DD/MM/YYYY')
           td
             .text-center 
               - if (financing.isDirect)
@@ -30,13 +32,16 @@ block content
               - else
                 | Indireto
           td
+            a(href='/projects/'+financing.project._id, title="Ver este projeto")=financing.project.title
+          td
             .text-center
               =accounting.formatMoney(financing.amount, "R$", 2, ".", ",")
     tfoot
       tr
+        td
         td 
         td 
-          .text-center
+          .text-right
             b Total
         td 
           .text-center

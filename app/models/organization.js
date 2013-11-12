@@ -10,6 +10,7 @@ var mongoose = require('mongoose')
   , Financing = mongoose.model('Financing')
   , _ = require('underscore') 
   , csv = require('csv')
+  , async = require('async')
 
 /**
  * Organization Schema
@@ -58,11 +59,23 @@ OrganizationSchema.methods = {
 OrganizationSchema.statics = {
 
 
-  load: function (id, done) {
+  load: function (id, doneLoading) {
     this
       .findOne({ _id : id })
       .populate({path: 'financings', options: { sort: { 'contractDate': 1 } } })
-      .exec(done)
+      .lean()
+      .exec(function(err, organization){
+        // populate projects
+        async.map(organization.financings, 
+          function(financing,doneLoadingProject){
+            mongoose.model('Project').findById(financing.project, function(err, project){
+              financing.project = project
+              doneLoadingProject(null, financing)
+            })          
+          }, function(err, results){
+            doneLoading(null, organization)
+        })
+      })      
   },
   list: function (options, cb) {
     var criteria = options.criteria || {}

@@ -4,7 +4,6 @@
 
 var mongoose = require('mongoose')
   , Organization = mongoose.model('Organization')
-  , Project = mongoose.model('Project')
   , Activity = mongoose.model('Activity')
   , utils = require('../../lib/utils')
   , _ = require('underscore')
