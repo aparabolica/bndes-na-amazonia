@@ -39,7 +39,8 @@
     "underscore": "stable",
     "async": "latest",
     "view-helpers": "latest",
-    "forever": "latest"
+    "forever": "latest",
+    "markdown": "latest"
   },
   "devDependencies": {
     "supertest": "latest",

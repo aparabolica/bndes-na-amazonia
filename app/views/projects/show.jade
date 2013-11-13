@@ -45,7 +45,7 @@ block content
     h2 
       =project.legalActionsQty
       |  ações do Ministério Público
-    p=project.legalActionsDescription
+    div!= md.toHTML(project.legalActionsDescription)
   - else
     p Não há ações do Ministério Público para este projeto
 

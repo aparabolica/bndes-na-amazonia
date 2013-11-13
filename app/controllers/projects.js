@@ -127,7 +127,9 @@ exports.show = function(req, res){
     project: req.project,
     Globalize: require('globalize'),
     Moment: require('moment'),
-    accounting: require('accounting')
+    accounting: require('accounting'),
+    md: require('markdown').markdown
+    
   })
 }
 
