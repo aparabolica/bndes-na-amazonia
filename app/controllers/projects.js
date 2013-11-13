@@ -5,7 +5,6 @@
 
 var mongoose = require('mongoose')
   , Project = mongoose.model('Project')
-  , Quiche = require('quiche')  
   , utils = require('../../lib/utils')
   , _ = require('underscore')
   , csv = require('csv')
@@ -45,7 +44,6 @@ exports.index = function(req, res){
         projects: projects,
         page: page + 1,
         pages: Math.ceil(count / perPage),
-        Quiche: Quiche,
         Globalize: require('globalize'),
         accounting: require('accounting')
       })

@@ -34,7 +34,6 @@
     "moment": "latest",
     "accounting": "latest",
     "globalize": "latest",
-    "quiche": "latest",
     "notifier": "latest",
     "underscore": "stable",
     "async": "latest",
