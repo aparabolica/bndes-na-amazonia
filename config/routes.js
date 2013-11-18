@@ -42,6 +42,9 @@ module.exports = function (app, passport) {
   // home route
   app.get('/', home.index)
 
+  // about route
+  app.get('/sobre', home.about)
+
   // admin routes
   app.get('/populate', admin.populate)
 
