@@ -1,5 +1,15 @@
 body {
   padding-top: 60px;
+  font-family: "Open Sans",Helvetica,Arial,sans-serif;  
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Cantata One","Helvetica Neue",Helvetica,Arial,sans-serif;
+  margin-bottom: 20px;
+}
+
+p {
+  text-align: justify;
 }
 
 .container {
