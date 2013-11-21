@@ -5,29 +5,41 @@ block main
 
 block content
   h2 Dados sobre este financiamento
-  p 
-    | Beneficiário: 
-    - if (financing.beneficiary)
-      a(href='/organizations/'+financing.beneficiary._id)=financing.beneficiary.name
-    - else
-      | Não um beneficiário associado a este financiamento!  
-  p
-    | Projeto:     
-    - if (financing.project)
-      a(href='/projects/'+financing.project._id)=financing.project.title
-    - else
-      | Não há projetos associados a este financiamento!
-  p 
-    | Data: 
-    =Moment(financing.contractDate).utc().format('DD/MM/YYYY')
-  p 
-    | Valor: #{accounting.formatMoney(financing.amount, "R$", 2, ".", ",")}
-  p 
-    | Tipo: 
-    - if (isDirect)
-      | Direto
-    - else 
-      | Indireto
+  table.table
+    tr
+      th
+        | Beneficiário
+      td
+        - if (financing.beneficiary)
+          a(href='/organizations/'+financing.beneficiary._id)=financing.beneficiary.name
+        - else
+          | Não um beneficiário associado a este financiamento!  
+    tr
+      th
+        | Projeto
+      td
+        - if (financing.project)
+          a(href='/projects/'+financing.project._id)=financing.project.title
+        - else
+          | Não há projetos associados a este financiamento!
+    tr
+      th 
+        | Data
+      td
+        =Moment(financing.contractDate).utc().format('DD/MM/YYYY')
+    tr
+      th 
+        | Valor
+      td
+        strong=accounting.formatMoney(financing.amount, "R$", 2, ".", ",")
+    tr
+      th 
+        | Tipo
+      td
+        - if (isDirect)
+          | Direto
+        - else 
+          | Indireto
 
   p.pull-right 
     a.btn(href="javascript:history.back()" class="btn-primary") Voltar
