@@ -21,7 +21,7 @@ module.exports = function (app, config, passport) {
     level: 9
   }))
 
-  app.use(express.favicon())
+  app.use(express.favicon(__dirname + '/../public/img/favicon.ico'));
   app.use(express.static(config.root + '/public'))
 
   // don't use logger for test env
