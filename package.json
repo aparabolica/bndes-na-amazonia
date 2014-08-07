@@ -22,7 +22,7 @@
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/unit/*.js test/controllers/*.js test/controllers/entities/*.js"
   },
   "dependencies": {
-    "express": "latest",
+    "express": "3.x",
     "jade": "latest",
     "csv": "latest",
     "mongoose": "latest",
