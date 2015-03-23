@@ -6,40 +6,40 @@
     "bndes",
     "amazonia"
   ],
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": false,
   "author": "Vitor George <vitor.george@gmail.com>",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/vgeorge/elos.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infoamazonia/bndesnaamazonia"
   },
   "engines": {
     "node": "0.10.x",
-    "npm":  "1.2.x"
+    "npm": "1.2.x"
   },
   "scripts": {
     "start": "NODE_ENV=development ./node_modules/.bin/nodemon server.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/unit/*.js test/controllers/*.js test/controllers/entities/*.js"
   },
   "dependencies": {
+    "accounting": "^0.4.1",
+    "async": "^0.9.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^0.7.0",
+    "csv": "0.3.x",
     "express": "3.x",
-    "jade": "latest",
-    "csv": "latest",
-    "mongoose": "latest",
-    "mongoose-schema-extend": "latest",
-    "connect-mongo": "latest",
-    "connect-flash": "latest",
-    "passport": "latest",
-    "passport-local": "latest",
-    "moment": "latest",
-    "accounting": "latest",
-    "globalize": "latest",
-    "notifier": "latest",
-    "underscore": "stable",
-    "async": "latest",
-    "view-helpers": "latest",
-    "forever": "latest",
-    "markdown": "latest"
+    "forever": "^0.14.1",
+    "globalize": "^1.0.0-alpha.18",
+    "jade": "^1.9.2",
+    "markdown": "^0.5.0",
+    "moment": "^2.9.0",
+    "mongoose": "^3.8.25",
+    "mongoose-schema-extend": "^0.1.7",
+    "notifier": "^0.1.7",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0",
+    "underscore": "^1.8.2",
+    "view-helpers": "^0.1.5"
   },
   "devDependencies": {
     "supertest": "latest",
