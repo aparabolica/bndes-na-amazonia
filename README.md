@@ -19,7 +19,7 @@ The website is made in [Node.js](nodejs.org) and uses [MongoDB](www.mongodb.com)
 
 ## The data
 
-All data are available as CSV files at [this repository](/blob/master/data) and at the [website](http://bndesnaamazonia.org).
+All data are available as CSV files at [this repository](data) and at the [website](http://bndesnaamazonia.org).
 
 ## Authors
 
@@ -29,5 +29,5 @@ All data are available as CSV files at [this repository](/blob/master/data) and 
 
 ## License
 
-* Source code: [MIT](/blob/master/LICENSE)
+* Source code: [MIT](LICENSE)
 * Data: [Public domain](https://en.wikipedia.org/wiki/Public_domain)
