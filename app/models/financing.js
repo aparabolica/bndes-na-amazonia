@@ -7,7 +7,7 @@ var mongoose = require('mongoose')
   , config = require('../../config/config')[env]
   , Schema = mongoose.Schema
   , _ = require('underscore')
-  , Moment = require('moment') 
+  , Moment = require('moment')
   , csv = require('csv')
   , async = require('async')
 
@@ -20,7 +20,7 @@ var FinancingSchema = new Schema({
   isDirect: {type: Boolean, default: true},
   description: {type : String, default : '', trim : true},
   project: {type: Schema.ObjectId, ref: 'Project'},
-  beneficiary: {type: Schema.ObjectId, ref: 'Organization'},  
+  beneficiary: {type: Schema.ObjectId, ref: 'Organization'},
   amount: {type: Number}
 })
 
@@ -42,15 +42,16 @@ FinancingSchema.path('amount').validate(function (amount) {
 
 FinancingSchema.post('save', function () {
   var self = this
-  mongoose.model('Project').findOne({_id: this.project})
+
+  mongoose.model('Project').findOne({_id: self.project})
     .exec(function(err, project){
       project.financings.addToSet(self)
-      project.save()      
+      project.save()
   })
-  mongoose.model('Organization').findOne(this.beneficiary)
+  mongoose.model('Organization').findOne(self.beneficiary._id)
     .exec(function(err, beneficiary){
       beneficiary.financings.addToSet(self)
-      beneficiary.save()      
+      beneficiary.save()
   })
 })
 
@@ -68,7 +69,7 @@ FinancingSchema.statics = {
   list: function (options, cb) {
     var criteria = options.criteria || {}
     this.find(criteria)
-      .sort(options.sortBy || 'name') 
+      .sort(options.sortBy || 'name')
       .populate('project')
       .populate('beneficiary')
       .limit(options.perPage)
@@ -79,7 +80,7 @@ FinancingSchema.statics = {
     var self = this
       , Project = mongoose.model('Project')
       , Organization = mongoose.model('Organization')
-    
+
     csv()
     .from.path(__dirname+filename, { columns: true, delimiter: ',', escape: '"' })
     .to.array(function(data){
@@ -95,7 +96,7 @@ FinancingSchema.statics = {
               beneficiary: beneficiary,
               amount: row['Valor']
             }).save(doneSavingAFinancing)
-          })          
+          })
         })
       }, function(err){
         Project.updateAllFinancedTotals()

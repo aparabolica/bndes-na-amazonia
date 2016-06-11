@@ -1,6 +1,7 @@
 {
   "name": "bndes-na-amazonia",
   "description": "BNDES na Amazônia",
+  "license": "MIT",
   "keywords": [
     "ecolab",
     "bndes",
@@ -11,7 +12,7 @@
   "author": "Vitor George <vitor.george@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/infoamazonia/bndesnaamazonia"
+    "url": "https://github.com/ecodigital/bndesnaamazonia"
   },
   "engines": {
     "node": "0.10.x",
@@ -33,8 +34,7 @@
     "jade": "^1.9.2",
     "markdown": "^0.5.0",
     "moment": "^2.9.0",
-    "mongoose": "^3.8.25",
-    "mongoose-schema-extend": "^0.1.7",
+    "mongoose": "^4.4.20",
     "notifier": "^0.1.7",
     "passport": "^0.2.1",
     "passport-local": "^1.0.0",
